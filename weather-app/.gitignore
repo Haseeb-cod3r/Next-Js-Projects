@@ -39,3 +39,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+http://api.weatherapi.com/v1/current.json?key=f52f0c02a30d433596e11847261303&q=London
