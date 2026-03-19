@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import DataContext from "../contexts/DataContext"
+import AppContext from "../contexts/AppContext"
+import UnitContext from "../contexts/UnitContext"
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300","400","500","600","700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 
@@ -22,8 +25,15 @@ export default function RootLayout({
       <body
         className={`${poppins.className} antialiased bg-[#071127] px-10 pt-20 pb-10`}
       >
-           
-        {children}
+        <AppContext >
+          <DataContext>
+            <UnitContext>
+              {children}
+            </UnitContext>
+          </DataContext>
+        </AppContext>
+
+
       </body>
     </html>
   );
