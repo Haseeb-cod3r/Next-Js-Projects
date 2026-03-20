@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.className} antialiased bg-[#071127] px-10 pt-20 pb-10`}
+        className={`${poppins.className} antialiased bg-[#071127] pb-10 flex flex-col items-center justify-center`}
       >
         <AppContext >
           <DataContext>
@@ -32,8 +32,6 @@ export default function RootLayout({
             </UnitContext>
           </DataContext>
         </AppContext>
-
-
       </body>
     </html>
   );

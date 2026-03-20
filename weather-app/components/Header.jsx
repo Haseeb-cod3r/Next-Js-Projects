@@ -5,9 +5,8 @@ import { useContext } from "react"
 
 export default function Header() {
   const { setUnit, unit } = useContext(unitContext)
-  console.log(unit);
   return (
-    <div className="flex items-end justify-center fixed top-[10px] right-[10px] ">
+    <div className="flex items-end justify-end mt-4 mr-6 w-full mb-10 ">
       <button className="cursor-pointer bg-white/10 backdrop-blur-lg border border-white/30 px-3 py-2 rounded-full text-white/30">
         <span onClick={() => setUnit("c")} className={` ${unit === "c" ? "text-[#04bbd8]" : "text-white/30"}  font-bold mr-2`}>
           °C

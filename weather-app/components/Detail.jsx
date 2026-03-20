@@ -10,15 +10,15 @@ export default function Detail() {
   const {unit} = useContext(unitContext)
   const { weather } = useContext(dataContext)
   const { value } = useContext(appContext)
-  if (Object.keys(weather).length === 0) {
+  if (weather === null) {
     return <h1 className="text-white">Enter a city name to see it's weather</h1>
   }
-  if (weather.error) {
+  if (weather?.error) {
     return <h1 className="text-white">{weather.error.message}</h1>
   }
-  if (weather.current && weather.location) {
+  if (weather?.current && weather?.location) {
     return (
-      <div className="text-white flex flex-col items-center justify-center text-center w-[50%] p-5  bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl">
+      <div className="text-white flex flex-col items-center justify-center text-center p-5 w-full  bg-white/10 backdrop-blur-lg border border-white/10 rounded-3xl">
         <div className="flex items-center gap-2 border-[#42b1c5]/20 border p-2 rounded-full bg-[#19364a] mb-5">
           <MapPin color="#35e4ff" />
           <p className="text-[#35e4ff] text-[13px]">
@@ -28,7 +28,7 @@ export default function Detail() {
         <p className="mb-10">
           {weather.location.localtime}
         </p>
-        <div className="mb-10 flex justify-between items-center w-full px-10">
+        <div className="mb-10 flex max-custom1:flex-col gap-2 justify-between items-center w-full px-10">
           <img src={weather.current.condition.icon} alt="" />
 
           <div className="flex flex-col items-start">
@@ -52,7 +52,7 @@ export default function Detail() {
             <span className="mt-1">{weather.current.condition.text}</span>
           </div>
         </div>
-        <div className="flex w-full justify-between gap-4 mb-10">
+        <div className="flex max-custom1:flex-col w-full justify-between gap-4 mb-10">
           <div className="flex justify-between items-center gap-3  bg-white/1 backdrop-blur-lg border border-white/10 py-2 px-10 w-full rounded-2xl">
             <Wind color="#04bbd8" />
             <div className="text-start">

@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 export default function Label({ name }) {
       const { weather } = useContext(dataContext)
-      if (weather.current && weather.location) {
+      if (weather?.current && weather?.location) {
             if (name === "compass") {
 
                   return (

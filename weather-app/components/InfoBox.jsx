@@ -7,7 +7,7 @@ import { useContext } from "react";
 export default function InfoBox({ name }) {
   const { weather } = useContext(dataContext)
   const { unit } = useContext(unitContext)
-  if (weather.current && weather.location) {
+  if (weather?.current && weather?.location) {
     if (name === "condition") {
       const data = [
         { label: "Visibility", name: `${weather.current.vis_km}`, placeholder: `km` },
@@ -16,7 +16,7 @@ export default function InfoBox({ name }) {
         { label: "Status", name: `${weather.current.is_day ? "Day" : "Night"}` },
       ];
       return (
-        <div className="flex flex-col gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
+        <div className="flex max-custom2:items-center flex-col gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
           <div className="flex gap-3 items-center">
             <div className="bg-white/6 backdrop-blur-md border border-white/20 p-2.5 rounded-xl shadow-inner">
               <CloudRain size={20} className="text-blue-400" />
@@ -26,13 +26,13 @@ export default function InfoBox({ name }) {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-y-10 gap-x-4">
+          <div className="grid grid-cols-2 max-custom2:grid-cols-1 gap-y-10 gap-x-4">
             {data.map((item, i) => (
-              <div key={i} className="flex flex-col gap-1">
+              <div key={i} className="flex items-center place-self-center flex-col gap-1">
                 <p className="text-xs font-medium tracking-wider text-white/50">
                   {item.label}
                 </p>
-                <div className="flex items-baseline gap-2">
+                <div className="flex items-center gap-2">
                   <span className="text-2xl font-bold tabular-nums">{item.name}</span>
                   {item.placeholder && (
                     <span className="text-sm font-medium text-white/40">
@@ -54,7 +54,7 @@ export default function InfoBox({ name }) {
         { label: "UV Index", name: `${weather.current.uv}` },
       ];
       return (
-        <div className="flex flex-col gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
+        <div className="flex flex-col max-custom2:items-center gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
           <div className="flex gap-3 items-center">
             <div className="bg-white/6 backdrop-blur-md border border-white/20 p-2.5 rounded-xl shadow-inner">
               <Activity size={20} className="text-purple-400" />
@@ -64,9 +64,9 @@ export default function InfoBox({ name }) {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-y-10 gap-x-4">
+          <div className="grid grid-cols-2 max-custom2:grid-cols-1 gap-y-10 gap-x-4">
             {data.map((item, i) => (
-              <div key={i} className="flex flex-col gap-1">
+              <div key={i} className="flex items-center place-self-center flex-col gap-1">
                 <p className="text-xs font-medium tracking-wider text-white/50">
                   {item.label}
                 </p>
@@ -92,7 +92,7 @@ export default function InfoBox({ name }) {
         { label: "Speed (mph)", name: `${weather.current.wind_mph}`, placeholder: `mph` },
       ];
       return (
-        <div className="flex flex-col gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
+        <div className="flex flex-col max-custom2:items-center gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
           <div className="flex gap-3 items-center">
             <div className="bg-white/6 backdrop-blur-md border border-white/20 p-2.5 rounded-xl shadow-inner">
               <Wind size={20} className="text-[#35e4ff]" />
@@ -102,9 +102,9 @@ export default function InfoBox({ name }) {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-y-10 gap-x-4">
+          <div className="grid max-custom2:grid-cols-1 grid-cols-2 gap-y-10 gap-x-4">
             {data.map((item, i) => (
-              <div key={i} className="flex flex-col gap-1">
+              <div key={i} className="flex items-center place-self-center flex-col gap-1">
                 <p className="text-xs font-medium tracking-wider text-white/50">
                   {item.label}
                 </p>
@@ -130,7 +130,7 @@ export default function InfoBox({ name }) {
         { label: "Wind Chill", c: `${weather.current.windchill_c}°C`, f: `${weather.current.windchill_f}°F` },
       ];
       return (
-        <div className="flex flex-col gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
+        <div className="flex max-custom2:items-center flex-col gap-6 p-6 text-white bg-gradient-to-br from-white/7 to-white/7 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl">
           <div className="flex gap-3 items-center">
             <div className="bg-white/6 backdrop-blur-md border border-white/20 p-2.5 rounded-xl shadow-inner">
               <ThermometerSun size={20} className="text-yellow-400" />
@@ -140,10 +140,10 @@ export default function InfoBox({ name }) {
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-y-10 gap-x-4">
+          <div className="grid max-custom2:grid-cols-1 grid-cols-2 gap-y-10 gap-x-4">
             {data.map((item, i) => (
               unit === "c" ?
-              <div key={i} className="flex flex-col gap-1">
+              <div key={i} className="flex items-center place-self-center flex-col gap-1">
                 <p className="text-xs font-medium tracking-wider text-white/50">
                   {item.label}
                 </p>
