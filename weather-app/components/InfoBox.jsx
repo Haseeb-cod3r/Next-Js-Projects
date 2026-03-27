@@ -141,9 +141,9 @@ export default function InfoBox({ name }) {
           </div>
 
           <div className="grid max-custom2:grid-cols-1 grid-cols-2 gap-y-10 gap-x-4">
-            {data.map((item, i) => (
+            {data.map((item, index) => (
               unit === "c" ?
-              <div key={i} className="flex items-center place-self-center flex-col gap-1">
+              <div key={index} className="flex items-center place-self-center flex-col gap-1">
                 <p className="text-xs font-medium tracking-wider text-white/50">
                   {item.label}
                 </p>
