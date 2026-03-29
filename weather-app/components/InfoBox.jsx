@@ -158,6 +158,7 @@ export default function InfoBox({ name }) {
               </div>: <div key={i} className="flex flex-col gap-1">
                 <p className="text-xs font-medium tracking-wider text-white/50">
                   {item.label}
+                  
                 </p>
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl font-bold tabular-nums">{item.f}</span>
