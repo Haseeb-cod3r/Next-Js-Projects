@@ -2,7 +2,7 @@
 
 import { dataContext } from "@/contexts/DataContext";
 import { unitContext } from "@/contexts/UnitContext";
-import { ThermometerSun, Wind, Activity,CloudRain } from "lucide-react";
+import { ThermometerSun, Wind, Activity, CloudRain } from "lucide-react";
 import { useContext } from "react";
 export default function InfoBox({ name }) {
   const { weather } = useContext(dataContext)
@@ -12,7 +12,7 @@ export default function InfoBox({ name }) {
       const data = [
         { label: "Visibility", name: `${weather.current.vis_km}`, placeholder: `km` },
         { label: "Cloud Cover", name: `${weather.current.cloud}%` },
-        { label: "Precipitation", name: `${weather.current.precip_mm}` , placeholder: `mm` },
+        { label: "Precipitation", name: `${weather.current.precip_mm}`, placeholder: `mm` },
         { label: "Status", name: `${weather.current.is_day ? "Day" : "Night"}` },
       ];
       return (
@@ -22,7 +22,7 @@ export default function InfoBox({ name }) {
               <CloudRain size={20} className="text-blue-400" />
             </div>
             <h2 className="text-lg font-semibold tracking-wide opacity-90">
-             Conditions
+              Conditions
             </h2>
           </div>
 
@@ -143,32 +143,32 @@ export default function InfoBox({ name }) {
           <div className="grid max-custom2:grid-cols-1 grid-cols-2 gap-y-10 gap-x-4">
             {data.map((item, index) => (
               unit === "c" ?
-              <div key={index} className="flex items-center place-self-center flex-col gap-1">
-                <p className="text-xs font-medium tracking-wider text-white/50">
-                  {item.label}
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold tabular-nums">{item.c}</span>
-                  {item.f && (
-                    <span className="text-sm font-medium text-white/40">
-                      {item.f}
-                    </span>
-                  )}
+                <div key={index} className="flex items-center place-self-center flex-col gap-1">
+                  <p className="text-xs font-medium tracking-wider text-white/50">
+                    {item.label}
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold tabular-nums">{item.c}</span>
+                    {item.f && (
+                      <span className="text-sm font-medium text-white/40">
+                        {item.f}
+                      </span>
+                    )}
+                  </div>
+                </div> : <div key={i} className="flex flex-col gap-1">
+                  <p className="text-xs font-medium tracking-wider text-white/50">
+                    {item.label}
+
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold tabular-nums">{item.f}</span>
+                    {item.c && (
+                      <span className="text-sm font-medium text-white/40">
+                        {item.c}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>: <div key={i} className="flex flex-col gap-1">
-                <p className="text-xs font-medium tracking-wider text-white/50">
-                  {item.label}
-                  
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold tabular-nums">{item.f}</span>
-                  {item.c && (
-                    <span className="text-sm font-medium text-white/40">
-                      {item.c}
-                    </span>
-                  )}
-                </div>
-              </div>
             ))}
           </div>
         </div>
