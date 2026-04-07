@@ -25,8 +25,8 @@ const tags = [
 ]
 
 export default function Sidebar() {
-  
-  const {activeNav, setActiveNav} = useContext(AppContext)
+
+  const { activeNav, setActiveNav } = useContext(AppContext)
   const [checkedTags, setCheckedTags] = useState([])
 
   const toggleTag = (tag) =>
@@ -36,7 +36,7 @@ export default function Sidebar() {
 
   return (
     <aside className="w-52  bg-white border-r border-gray-200 flex flex-col sticky top-0 z-10 h-screen">
-      {/* Logo */}
+
       <div className="flex items-center gap-2.5 px-5 py-5">
         <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
           <Bookmark size={15} className="text-white" />
@@ -44,7 +44,7 @@ export default function Sidebar() {
         <span className="font-semibold text-sm">DevStash Manager</span>
       </div>
 
-      {/* Nav */}
+
       <nav className="px-3 py-4 flex flex-col gap-0.5">
         <NavItem
           icon={<Home size={15} />}
@@ -60,7 +60,7 @@ export default function Sidebar() {
         />
       </nav>
 
-      {/* Tags */}
+
       <div className="px-3 flex flex-col bg-white overflow-auto">
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-2 mb-2">
           Tags
@@ -74,7 +74,7 @@ export default function Sidebar() {
               <input
                 type="checkbox"
                 checked={checkedTags.includes(tag.name)}
-                
+
                 onChange={() => toggleTag(tag.name)}
                 className="w-3.5 h-3.5 accent-gray-900"
               />

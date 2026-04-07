@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
 export default function Modal({ setIsModalOpen }) {
-  const { data, setData, archiveData, setArchiveData } = useContext(AppContext)
+  const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
   const { formData, setFormData, tags, setTags, isEditMode } = useContext(ModalContext)
 
 
@@ -18,6 +18,11 @@ export default function Modal({ setIsModalOpen }) {
     }
     setFormData({ ...formData, [key]: e.target.value })
   }
+  function sortDate(data) {
+    const sortedData = [...data.sort((a, b) => new Date(b.created) - new Date(a.created))]
+    return sortedData
+  }
+
 
   function addData() {
     if (!validateForm()) return
@@ -41,12 +46,12 @@ export default function Modal({ setIsModalOpen }) {
         }
         return obj
       })
-      setArchiveData(newEditedData)
+      setArchiveData(sortDate(newEditedData))
       resetAndCloseForm()
 
     } else if (isEditMode.edit) {
 
-      const newEditedData = data.map((obj) => {
+      const newEditedData = stashData.map((obj) => {
         if (obj.id === formData.id) {
           const newObj = {
             id: formData.id,
@@ -65,37 +70,33 @@ export default function Modal({ setIsModalOpen }) {
         }
         return obj
       })
-      setData(newEditedData)
+      setStashData(sortDate(newEditedData))
       resetAndCloseForm()
 
     } else {
-      const date = new Date().toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-      })
-      setData([{
-        ...formData, id: crypto.randomUUID(), created: date
-      }, ...data,])
+      const data = [{
+        ...formData, id: crypto.randomUUID(), created: Date.now()
+      }, ...stashData,]
+      setStashData(sortDate(data))
       resetAndCloseForm()
     }
   }
 
   function resetAndCloseForm() {
     setFormData({
-     id: "",
-     title: "",
-     url: "",
-     description:
-       "",
-     tags: [],
-     views: 0,
-     created: "",
-     isArchived:false,
-     isPinned:false,
-     pinnedAt:null
- 
-   })
+      id: "",
+      title: "",
+      url: "",
+      description:
+        "",
+      tags: [],
+      views: 0,
+      created: "",
+      isArchived: false,
+      isPinned: false,
+      pinnedAt: null
+
+    })
     setTags("")
     setIsModalOpen(false)
   }
@@ -131,10 +132,8 @@ export default function Modal({ setIsModalOpen }) {
         className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden"
       >
 
-        {/* Top accent bar */}
         <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500" />
 
-        {/* Header */}
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
           <div>
             <h2 className="text-base font-bold text-gray-900">Add DevStash</h2>
@@ -148,10 +147,10 @@ export default function Modal({ setIsModalOpen }) {
           </button>
         </div>
 
-        {/* Form Fields */}
+
         <div className="px-6 py-5 flex flex-col gap-4">
 
-          {/* URL */}
+
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               URL
@@ -168,7 +167,7 @@ export default function Modal({ setIsModalOpen }) {
             </div>
           </div>
 
-          {/* Title */}
+
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Title
@@ -185,7 +184,7 @@ export default function Modal({ setIsModalOpen }) {
             </div>
           </div>
 
-          {/* Description */}
+
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Description
@@ -202,7 +201,7 @@ export default function Modal({ setIsModalOpen }) {
             </div>
           </div>
 
-          {/* Tags */}
+
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
               Tags
@@ -221,7 +220,7 @@ export default function Modal({ setIsModalOpen }) {
 
         </div>
 
-        {/* Footer Buttons */}
+
         <div className="px-6 pb-6 flex gap-3">
           <button
             onClick={() => resetAndCloseForm()}

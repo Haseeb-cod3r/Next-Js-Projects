@@ -8,17 +8,16 @@ import { AppContext } from '@/contexts/AppData'
 import DevStashCard from './DevStashCard'
 
 
-
-
 export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
   const [sort, setSort] = useState('Date added')
-  const { data, activeNav, archiveData } = useContext(AppContext)
+  const { stashData, activeNav, archiveData } = useContext(AppContext)
+
   return (
     <div>
-      {/* Top bar */}
+
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-gray-900">{activeNav === "home"? "All Stash" : "All Archive"}</h1>
+        <h1 className="text-xl font-bold text-gray-900">{activeNav === "home" ? "All Stash" : "All Archive"}</h1>
 
         <div className="relative">
           <button
@@ -46,9 +45,9 @@ export default function DevStash() {
         </div>
       </div>
 
-      {/* Grid */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {activeNav === "home" ? data.map(devStash => (
+        {activeNav === "home" ? stashData.map(devStash => (
           <DevStashCard key={devStash.id} devStash={devStash} />
         ))
           : archiveData.map(devStash => (

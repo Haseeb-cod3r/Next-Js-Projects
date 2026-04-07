@@ -12,7 +12,7 @@ const archiveMenu = ['Edit', 'Remove Archive', 'Delete']
 
 export default function DevStashCard({ devStash }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { data, setData, archiveData, setArchiveData } = useContext(AppContext)
+  const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
   const { setIsModalOpen, setFormData, setTags, setIsEditMode } = useContext(ModalContext)
 
 
@@ -27,7 +27,7 @@ export default function DevStashCard({ devStash }) {
       const newData = archiveData.filter((obj) => obj.id === devStash.id)
       const newArchiveData = archiveData.filter((obj) => obj.id !== devStash.id)
       setArchiveData(newArchiveData)
-      setData([{ ...newData[0], isArchived: false }, ...data])
+      setStashData([{ ...newData[0], isArchived: false, isPinned: false, isLatest: false }, ...data])
 
     }
     if (action === "Edit") {
@@ -52,21 +52,21 @@ export default function DevStashCard({ devStash }) {
   }
   function handleStashAction(action) {
     if (action === "Delete") {
-      const newData = data.filter((obj) => obj.id !== devStash.id)
-      setData(newData)
+      const newData = stashData.filter((obj) => obj.id !== devStash.id)
+      setStashData(newData)
       console.log(newData);
     }
     if (action === "Archive") {
-      const newArchiveData = data.filter((obj) => obj.id === devStash.id)
+      const newArchiveData = stashData.filter((obj) => obj.id === devStash.id)
       const isArchived = archiveData.some(obj => obj.id === devStash.id)
       if (!isArchived) {
-        const newData = data.filter((obj) => obj.id !== devStash.id)
-        setData(newData)
-        setArchiveData([...archiveData, { ...newArchiveData[0], isArchived: true }])
+        const newData = stashData.filter((obj) => obj.id !== devStash.id)
+        setStashData(newData)
+        setArchiveData([...archiveData, { ...newArchiveData[0], isArchived: true, isPinned: false, isLatest: false }])
       }
     }
     if (action === "Edit") {
-      const dataForForm = data.filter((obj) => obj.id === devStash.id)
+      const dataForForm = stashData.filter((obj) => obj.id === devStash.id)
       setFormData({
         id: dataForForm[0].id,
         title: dataForForm[0].title,
@@ -86,33 +86,25 @@ export default function DevStashCard({ devStash }) {
     }
   }
 
-  function handleStashPin() {
+  function sortPin(data, setData) {
     const pinnedData = data.map((item) => (
       item.id === devStash.id ? { ...item, isPinned: !item.isPinned, pinnedAt: !item.isPinned ? Date.now() : null } : item
     ))
+
+    const sortedPinnedData = [...pinnedData.filter((item) => item.isPinned).sort((a, b) => b.pinnedAt - a.pinnedAt)]
+    const sortedNormalData = [...pinnedData.filter((item) => !item.isPinned).sort((a, b) => new Date(b.created) - new Date(a.created))]
+
     const sorted = [
-      ...pinnedData.filter((item) => item.isPinned)
-        .sort((a, b) => b.pinnedAt - a.pinnedAt),
-      ...pinnedData.filter((item) => !item.isPinned)
+      ...sortedPinnedData,
+      ...sortedNormalData
     ]
     setData(sorted)
-  }
-  function handleArchivePin() {
-    const pinnedData = archiveData.map((item) => (
-      item.id === devStash.id ? { ...item, isPinned: !item.isPinned, pinnedAt: !item.isPinned ? Date.now() : null } : item
-    ))
-    const sorted = [
-      ...pinnedData.filter((item) => item.isPinned)
-        .sort((a, b) => b.pinnedAt - a.pinnedAt),
-      ...pinnedData.filter((item) => !item.isPinned)
-    ]
-    setArchiveData(sorted)
   }
 
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-shadow relative">
-      {/* Top row */}
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
@@ -130,7 +122,7 @@ export default function DevStashCard({ devStash }) {
           </div>
         </div>
 
-        {/* 3-dot menu */}
+
         <div className="relative">
           <button
             onClick={() => setMenuOpen(p => !p)}
@@ -160,12 +152,11 @@ export default function DevStashCard({ devStash }) {
         </div>
       </div>
 
-      {/* Description */}
+
       <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
         {devStash.description}
       </p>
 
-      {/* Tags */}
       <div className="flex flex-wrap gap-1.5">
         {devStash.tags.map(tag => (
           <span
@@ -177,7 +168,7 @@ export default function DevStashCard({ devStash }) {
         ))}
       </div>
 
-      {/* Footer */}
+
       <div className="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-100">
         <span className="flex items-center gap-1">
           <Eye size={11} />
@@ -185,9 +176,13 @@ export default function DevStashCard({ devStash }) {
         </span>
         <span className="flex items-center gap-1">
           <Calendar size={11} />
-          {devStash.created}
+          {new Date(devStash.created).toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+          })}
         </span>
-        <span onClick={() => { devStash.isArchived ? handleArchivePin() : handleStashPin() }} className='flex items-center self-end ml-auto cursor-pointer'>
+        <span onClick={() => { devStash.isArchived ? sortPin(archiveData, setArchiveData) : sortPin(stashData, setStashData) }} className='flex items-center self-end ml-auto cursor-pointer'>
           <Pin size={15} className={`${devStash.isPinned ? "fill-green-600 border-green-600" : ""}`} />
         </span>
       </div>

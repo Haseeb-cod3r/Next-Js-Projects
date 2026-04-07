@@ -12,7 +12,7 @@ export default function ModalData({ children }) {
        "",
      tags: [],
      views: 0,
-     created: "",
+     created: Date.now(),
      isArchived:false,
      isPinned:false,
      pinnedAt:null
