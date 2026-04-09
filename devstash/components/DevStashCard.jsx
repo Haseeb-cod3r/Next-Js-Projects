@@ -4,6 +4,7 @@ import { useContext, useState } from 'react'
 import { MoreHorizontal, Eye, Calendar, Pin, } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
+import { UtilityContext } from '@/contexts/Utility'
 
 
 const stashMenu = ['Edit', 'Archive', 'Delete']
@@ -14,20 +15,22 @@ export default function DevStashCard({ devStash }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
   const { setIsModalOpen, setFormData, setTags, setIsEditMode } = useContext(ModalContext)
+  const { sortData } = useContext(UtilityContext)
 
 
 
   function handleArchiveAction(action) {
     if (action === "Delete") {
       const newData = archiveData.filter((obj) => obj.id !== devStash.id)
-      setArchiveData(newData)
+      setArchiveData(sortData("date", newData))
       console.log(newData);
     }
     if (action === "Remove Archive") {
       const newData = archiveData.filter((obj) => obj.id === devStash.id)
       const newArchiveData = archiveData.filter((obj) => obj.id !== devStash.id)
-      setArchiveData(newArchiveData)
-      setStashData([{ ...newData[0], isArchived: false, isPinned: false, isLatest: false }, ...data])
+
+      setArchiveData(sortData("date", newArchiveData))
+      setStashData(sortData("date", [{ ...newData[0], isArchived: false, isPinned: false, isLatest: false }, ...stashData]))
 
     }
     if (action === "Edit") {
@@ -53,7 +56,7 @@ export default function DevStashCard({ devStash }) {
   function handleStashAction(action) {
     if (action === "Delete") {
       const newData = stashData.filter((obj) => obj.id !== devStash.id)
-      setStashData(newData)
+      setStashData(sortData("date", newData))
       console.log(newData);
     }
     if (action === "Archive") {
@@ -61,8 +64,8 @@ export default function DevStashCard({ devStash }) {
       const isArchived = archiveData.some(obj => obj.id === devStash.id)
       if (!isArchived) {
         const newData = stashData.filter((obj) => obj.id !== devStash.id)
-        setStashData(newData)
-        setArchiveData([...archiveData, { ...newArchiveData[0], isArchived: true, isPinned: false, isLatest: false }])
+        setStashData(sortData("date", newData))
+        setArchiveData(sortData("date", [...archiveData, { ...newArchiveData[0], isArchived: true, isPinned: false, isLatest: false }]))
       }
     }
     if (action === "Edit") {

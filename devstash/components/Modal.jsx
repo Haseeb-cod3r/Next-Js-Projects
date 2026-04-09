@@ -5,10 +5,11 @@ import { X, Link, FileText, Tag, AlignLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
+import { UtilityContext } from '@/contexts/Utility'
 export default function Modal({ setIsModalOpen }) {
   const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
   const { formData, setFormData, tags, setTags, isEditMode } = useContext(ModalContext)
-
+  const { sortData } = useContext(UtilityContext)
 
   function handleOnChange(e, key) {
     if (key === "tags") {
@@ -18,12 +19,6 @@ export default function Modal({ setIsModalOpen }) {
     }
     setFormData({ ...formData, [key]: e.target.value })
   }
-  function sortDate(data) {
-    const sortedData = [...data.sort((a, b) => new Date(b.created) - new Date(a.created))]
-    return sortedData
-  }
-
-
   function addData() {
     if (!validateForm()) return
     if (isEditMode.edit && isEditMode.isArchiveEdit) {
@@ -46,7 +41,7 @@ export default function Modal({ setIsModalOpen }) {
         }
         return obj
       })
-      setArchiveData(sortDate(newEditedData))
+      setArchiveData(sortData("date", newEditedData))
       resetAndCloseForm()
 
     } else if (isEditMode.edit) {
@@ -70,18 +65,17 @@ export default function Modal({ setIsModalOpen }) {
         }
         return obj
       })
-      setStashData(sortDate(newEditedData))
+      setStashData(sortData("date", newEditedData))
       resetAndCloseForm()
 
     } else {
       const data = [{
         ...formData, id: crypto.randomUUID(), created: Date.now()
       }, ...stashData,]
-      setStashData(sortDate(data))
+      setStashData(sortData("date", data))
       resetAndCloseForm()
     }
   }
-
   function resetAndCloseForm() {
     setFormData({
       id: "",

@@ -1,11 +1,15 @@
 'use client'
 
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Bookmark, Home, Archive } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
+import Link from 'next/link'
+import { UtilityContext } from '@/contexts/Utility'
 
 const tags = [
-  { name: 'AI', count: 1 },
+  { name: 'Dev Tools', count: 1 },
+  { name: 'Open Source', count: 1 },
+  { name: 'Ai', count: 1 },
   { name: 'Community', count: 5 },
   { name: 'Compatibility', count: 1 },
   { name: 'CSS', count: 6 },
@@ -26,14 +30,31 @@ const tags = [
 
 export default function Sidebar() {
 
-  const { activeNav, setActiveNav } = useContext(AppContext)
+  const { activeNav, setActiveNav, stashData } = useContext(AppContext)
+  const { sortAccTags } = useContext(UtilityContext)
   const [checkedTags, setCheckedTags] = useState([])
+  const [appliedTags, setAppliedTags] = useState([])
 
-  const toggleTag = (tag) =>
+  useEffect(() => {
+    console.log(appliedTags);
+    sortAccTags(appliedTags, stashData)
+  }, [appliedTags])
+
+  function toggleTag(tag) {
     setCheckedTags(prev =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     )
+  }
+  function addAppliedTags(tagName) {
+    const isPresent = appliedTags.some((tag) => tag === tagName)
+    if (isPresent) {
+      const filterAppliedTags = appliedTags.filter((tag) => tag !== tagName)
+      setAppliedTags(filterAppliedTags)
+    } else {
+      setAppliedTags([...appliedTags, tagName])
+    }
 
+  }
   return (
     <aside className="w-52  bg-white border-r border-gray-200 flex flex-col sticky top-0 z-10 h-screen">
 
@@ -46,18 +67,22 @@ export default function Sidebar() {
 
 
       <nav className="px-3 py-4 flex flex-col gap-0.5">
-        <NavItem
-          icon={<Home size={15} />}
-          label="Home"
-          active={activeNav === 'home'}
-          onClick={() => setActiveNav('home')}
-        />
-        <NavItem
-          icon={<Archive size={15} />}
-          label="Archived"
-          active={activeNav === 'archived'}
-          onClick={() => setActiveNav('archived')}
-        />
+        <Link href={"/"}>
+          <NavItem
+            icon={<Home size={15} />}
+            label="Home"
+            active={activeNav === 'home'}
+            onClick={() => setActiveNav('home')}
+          /></Link>
+
+        <Link href={"/Archive"}>
+          <NavItem
+            icon={<Archive size={15} />}
+            label="Archived"
+            active={activeNav === 'archived'}
+            onClick={() => setActiveNav('archived')}
+          /></Link>
+
       </nav>
 
 
@@ -75,7 +100,10 @@ export default function Sidebar() {
                 type="checkbox"
                 checked={checkedTags.includes(tag.name)}
 
-                onChange={() => toggleTag(tag.name)}
+                onChange={() =>{ 
+                   addAppliedTags(tag.name)
+                  toggleTag(tag.name)
+                }}
                 className="w-3.5 h-3.5 accent-gray-900"
               />
               <span className="text-sm text-gray-600">{tag.name}</span>

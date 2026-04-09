@@ -2,16 +2,19 @@
 
 import { useContext, useState } from 'react'
 import { ArrowUpDown } from 'lucide-react'
-
-import { SORT_OPTIONS } from '@/Data'
 import { AppContext } from '@/contexts/AppData'
 import DevStashCard from './DevStashCard'
+import { UtilityContext } from '@/contexts/Utility'
 
+export const SORT_OPTIONS = ["Latest", "Oldest", "Most viewed", "Least viewed"];
 
 export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
-  const [sort, setSort] = useState('Date added')
-  const { stashData, activeNav, archiveData } = useContext(AppContext)
+  const [sort, setSort] = useState('Latest')
+  const { stashData, activeNav, archiveData, setArchiveData, setStashData } = useContext(AppContext)
+const {sortData} = useContext(UtilityContext)
+
+
 
   return (
     <div>
@@ -33,7 +36,10 @@ export default function DevStash() {
               {SORT_OPTIONS.map(opt => (
                 <button
                   key={opt}
-                  onClick={() => { setSort(opt); setSortOpen(false) }}
+                  onClick={() => {
+                    setSort(opt); setSortOpen(false);
+                    activeNav === "home" ? sortData(opt, stashData, setStashData) : sortData(opt, archiveData, setArchiveData)
+                  }}
                   className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                     ${sort === opt ? 'font-semibold text-gray-900 bg-gray-50' : 'text-gray-600'}`}
                 >

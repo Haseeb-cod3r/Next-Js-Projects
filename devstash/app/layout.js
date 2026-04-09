@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppData from "@/contexts/AppData";
 import ModalData from "@/contexts/ModalData";
+import Utility from "@/contexts/Utility";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,7 +23,9 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} `}>
       <body className="bg-gray-100 text-gray-900">
         <AppData>
-          <ModalData>{children}</ModalData>
+          <ModalData>
+            <Utility>{children}</Utility>
+          </ModalData>
         </AppData>
       </body>
     </html>
