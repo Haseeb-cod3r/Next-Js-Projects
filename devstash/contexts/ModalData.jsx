@@ -5,26 +5,26 @@ import React, { createContext, useState } from 'react'
 export const ModalContext = createContext({})
 export default function ModalData({ children }) {
   const [formData, setFormData] = useState({
-     id: "",
-     title: "",
-     url: "",
-     description:
-       "",
-     tags: [],
-     views: 0,
-     created: Date.now(),
-     isArchived:false,
-     isPinned:false,
-     pinnedAt:null
- 
-   })
+    id: "",
+    title: "",
+    url: "",
+    description:
+      "",
+    tags: [],
+    views: 0,
+    created: Date.now(),
+    isArchived: false,
+    isPinned: false,
+    pinnedAt: null
+
+  })
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [tags, setTags] = useState("")
-  const [isEditMode, setIsEditMode] = useState({edit:false,isArchiveEdit:false})
+  const [isEditMode, setIsEditMode] = useState({ edit: false, isArchiveEdit: false })
 
 
   return (
-    <ModalContext.Provider value={{isModalOpen,setIsModalOpen,formData,setFormData,tags,setTags,isEditMode,setIsEditMode }}>
+    <ModalContext.Provider value={{ isModalOpen, setIsModalOpen, formData, setFormData, tags, setTags, isEditMode, setIsEditMode }}>
       {children}
     </ModalContext.Provider>
   )

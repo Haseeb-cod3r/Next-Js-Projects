@@ -1,6 +1,6 @@
 'use client'
 
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { MoreHorizontal, Eye, Calendar, Pin, } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
@@ -30,7 +30,11 @@ export default function DevStashCard({ devStash }) {
       const newArchiveData = archiveData.filter((obj) => obj.id !== devStash.id)
 
       setArchiveData(sortData("date", newArchiveData))
-      setStashData(sortData("date", [{ ...newData[0], isArchived: false, isPinned: false, isLatest: false }, ...stashData]))
+      setStashData(sortData("date", [{
+        ...newData[0], isArchived: false,
+        isPinned: false,
+        isLatest: false
+      }, ...stashData]))
 
     }
     if (action === "Edit") {
@@ -57,7 +61,6 @@ export default function DevStashCard({ devStash }) {
     if (action === "Delete") {
       const newData = stashData.filter((obj) => obj.id !== devStash.id)
       setStashData(sortData("date", newData))
-      console.log(newData);
     }
     if (action === "Archive") {
       const newArchiveData = stashData.filter((obj) => obj.id === devStash.id)
@@ -65,7 +68,11 @@ export default function DevStashCard({ devStash }) {
       if (!isArchived) {
         const newData = stashData.filter((obj) => obj.id !== devStash.id)
         setStashData(sortData("date", newData))
-        setArchiveData(sortData("date", [...archiveData, { ...newArchiveData[0], isArchived: true, isPinned: false, isLatest: false }]))
+        setArchiveData(sortData("date", [...archiveData, {
+          ...newArchiveData[0], isArchived: true,
+          isPinned: false,
+          isLatest: false
+        }]))
       }
     }
     if (action === "Edit") {
@@ -88,15 +95,14 @@ export default function DevStashCard({ devStash }) {
       setIsModalOpen(true)
     }
   }
-
   function sortPin(data, setData) {
+
     const pinnedData = data.map((item) => (
       item.id === devStash.id ? { ...item, isPinned: !item.isPinned, pinnedAt: !item.isPinned ? Date.now() : null } : item
     ))
 
     const sortedPinnedData = [...pinnedData.filter((item) => item.isPinned).sort((a, b) => b.pinnedAt - a.pinnedAt)]
     const sortedNormalData = [...pinnedData.filter((item) => !item.isPinned).sort((a, b) => new Date(b.created) - new Date(a.created))]
-
     const sorted = [
       ...sortedPinnedData,
       ...sortedNormalData
@@ -163,7 +169,7 @@ export default function DevStashCard({ devStash }) {
       <div className="flex flex-wrap gap-1.5">
         {devStash.tags.map(tag => (
           <span
-            key={tag}
+            key={crypto.randomUUID()}
             className="text-xs bg-gray-100 text-gray-500 font-medium px-2.5 py-0.5 rounded-full"
           >
             {tag}
@@ -186,7 +192,7 @@ export default function DevStashCard({ devStash }) {
           })}
         </span>
         <span onClick={() => { devStash.isArchived ? sortPin(archiveData, setArchiveData) : sortPin(stashData, setStashData) }} className='flex items-center self-end ml-auto cursor-pointer'>
-          <Pin size={15} className={`${devStash.isPinned ? "fill-green-600 border-green-600" : ""}`} />
+          <Pin size={15} className={`${devStash.isPinned ? "fill-black" : ""}`} />
         </span>
       </div>
     </div>

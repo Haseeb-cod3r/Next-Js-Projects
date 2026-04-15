@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { X, Link, FileText, Tag, AlignLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AppContext } from '@/contexts/AppData'
@@ -11,13 +11,78 @@ export default function Modal({ setIsModalOpen }) {
   const { formData, setFormData, tags, setTags, isEditMode } = useContext(ModalContext)
   const { sortData } = useContext(UtilityContext)
 
+
+
+
   function handleOnChange(e, key) {
     if (key === "tags") {
       setTags(e.target.value)
-      setFormData({ ...formData, [key]: e.target.value.split(" ") })
+      setFormData({ ...formData, [key]: e.target.value.split(",") })
       return
     }
     setFormData({ ...formData, [key]: e.target.value })
+  }
+  function resetAndCloseForm() {
+    setFormData({
+      id: "",
+      title: "",
+      url: "",
+      description:
+        "",
+      tags: [],
+      views: 0,
+      created: "",
+      isArchived: false,
+      isPinned: false,
+      pinnedAt: null
+
+    })
+    setTags("")
+    setIsModalOpen(false)
+  }
+  function validateForm() {
+    if (formData.url === "") {
+      toast.error("Please provide a URL for your stash")
+      return false
+
+    }
+    if (formData.title === "") {
+      toast.error("Please provide a title for your stash")
+      return false
+    }
+    if (formData.description === "") {
+      toast.error("Please provide a description for your stash")
+      return false
+
+    }
+    if (formData.tags.length === 0) {
+      toast.error("Please provide a tags for your stash")
+      return false
+
+    }
+
+    function hasDuplicates(arr) {
+      const counts = {};
+      for (const item of arr) {
+        if (item === "") {
+          return "comma"
+        }
+        if (counts[item.trim()]) {
+          return "duplicate"
+        }
+        counts[item.trim()] = 1;
+      }
+    }
+
+    if (hasDuplicates(formData.tags) === "duplicate") {
+      toast.error("Please remove duplicate tags!")
+      return false
+    } else if (hasDuplicates(formData.tags) === "comma") {
+      toast.error("Remove leading or trailing commas.")
+      return false
+    }
+
+    return true
   }
   function addData() {
     if (!validateForm()) return
@@ -76,46 +141,8 @@ export default function Modal({ setIsModalOpen }) {
       resetAndCloseForm()
     }
   }
-  function resetAndCloseForm() {
-    setFormData({
-      id: "",
-      title: "",
-      url: "",
-      description:
-        "",
-      tags: [],
-      views: 0,
-      created: "",
-      isArchived: false,
-      isPinned: false,
-      pinnedAt: null
 
-    })
-    setTags("")
-    setIsModalOpen(false)
-  }
-  function validateForm() {
-    if (formData.url === "") {
-      toast.error("url is required")
-      return false
 
-    }
-    if (formData.title === "") {
-      toast.error("title is required")
-      return false
-    }
-    if (formData.description === "") {
-      toast.error("description is required")
-      return false
-
-    }
-    if (formData.tags === "") {
-      toast.error("tags is required")
-      return false
-
-    }
-    return true
-  }
   return (
     <div
       onClick={() => resetAndCloseForm()}
@@ -206,7 +233,7 @@ export default function Modal({ setIsModalOpen }) {
                 value={tags}
                 onChange={(e) => handleOnChange(e, "tags")}
                 type="text"
-                placeholder="CSS, Framework, Tools  (comma separated)"
+                placeholder="Framework, Tools, Design  (comma separated)"
                 className="w-full text-sm text-gray-700 placeholder-gray-300 outline-none bg-transparent"
               />
             </div>

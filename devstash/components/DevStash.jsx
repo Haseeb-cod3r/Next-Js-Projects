@@ -3,8 +3,8 @@
 import { useContext, useState } from 'react'
 import { ArrowUpDown } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
-import DevStashCard from './DevStashCard'
 import { UtilityContext } from '@/contexts/Utility'
+import DevStashGrid from './DevStashGrid'
 
 export const SORT_OPTIONS = ["Latest", "Oldest", "Most viewed", "Least viewed"];
 
@@ -12,8 +12,7 @@ export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
   const [sort, setSort] = useState('Latest')
   const { stashData, activeNav, archiveData, setArchiveData, setStashData } = useContext(AppContext)
-const {sortData} = useContext(UtilityContext)
-
+  const { sortData } = useContext(UtilityContext)
 
 
   return (
@@ -52,14 +51,9 @@ const {sortData} = useContext(UtilityContext)
       </div>
 
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {activeNav === "home" ? stashData.map(devStash => (
-          <DevStashCard key={devStash.id} devStash={devStash} />
-        ))
-          : archiveData.map(devStash => (
-            <DevStashCard key={devStash.id} devStash={devStash} />
-          ))}
-      </div>
+
+      <DevStashGrid />
+
     </div>
   )
 }

@@ -1,11 +1,18 @@
 "use client"
 
-import React, { createContext } from 'react'
+
+import React, { createContext, useContext } from 'react'
+import { AppContext } from './AppData'
 
 export const UtilityContext = createContext({})
 export default function Utility({ children }) {
+  const { setTagData } = useContext(AppContext)
 
   function sortAccTags(tagsArray, data) {
+    if (!tagsArray || tagsArray.length === 0) {
+      setTagData({ isTagData: false, data: [] })
+      return
+    }
     if (tagsArray) {
       const filterData = data.filter((item) => {
 
@@ -17,8 +24,7 @@ export default function Utility({ children }) {
         })
         return isTrue
       })
-      console.log(filterData);
-
+      setTagData({ isTagData: true, data: filterData })
     }
   }
   function sortData(sortAction, data, setData) {
@@ -27,14 +33,18 @@ export default function Utility({ children }) {
       return sortedData
     }
     if (sortAction === "Latest") {
+
       const sortedData = [...data.sort((a, b) => new Date(b.created) - new Date(a.created))]
       setData([...sortedData])
       return
     } else if (sortAction === "Oldest") {
+
       const sortedData = [...data.sort((a, b) => new Date(a.created) - new Date(b.created))]
+
       setData([...sortedData])
       return
     } else if (sortAction === "Most viewed") {
+
       const sortedData = [...data.sort((a, b) => b.views - a.views)]
       setData([...sortedData])
       return
