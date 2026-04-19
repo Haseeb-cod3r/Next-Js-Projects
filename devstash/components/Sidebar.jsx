@@ -8,12 +8,13 @@ import { AppContext } from '@/contexts/AppData'
 import { SearchContext } from '@/contexts/Search'
 import { TagContext } from '@/contexts/Tag'
 import { StateContext } from '@/contexts/State'
+import SkeletonTag from './SkeletonTag'
 
 
 
 export default function Sidebar() {
 
-  const { stashData, archiveData } = useContext(AppContext)
+  const { stashData, archiveData, isLoaded } = useContext(AppContext)
   const { setSearchValue } = useContext(SearchContext)
   const { sortAccTags, tags, generateTags } = useContext(TagContext)
   const { activeNav, setActiveNav, setSort } = useContext(StateContext)
@@ -97,7 +98,12 @@ export default function Sidebar() {
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-2 mb-2">
           Tags
         </p>
-        {tags.map(tag => (
+        {!isLoaded ? (
+          Array.from({ length: 20 }).map((_, index) => (
+            <SkeletonTag key={index} width="w-24" />
+          ))
+
+        ) : (tags.map(tag => (
           <label
             key={tag.name}
             className="flex items-center justify-between px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 transition-colors"
@@ -118,7 +124,7 @@ export default function Sidebar() {
               {tag.count}
             </span>
           </label>
-        ))}
+        )))}
       </div>
     </aside>
   )

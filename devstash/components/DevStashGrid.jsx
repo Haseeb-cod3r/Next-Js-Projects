@@ -6,12 +6,13 @@ import { ModalContext } from '@/contexts/ModalData'
 import { SearchContext } from '@/contexts/Search'
 import { TagContext } from '@/contexts/Tag'
 import { StateContext } from '@/contexts/State'
+import SkeletonCard from './SkeletonCard'
 
 
 
 export default function DevStashGrid() {
 
-  const { stashData, archiveData } = useContext(AppContext)
+  const { stashData, archiveData, isLoaded } = useContext(AppContext)
   const { setIsModalOpen } = useContext(ModalContext)
   const { searchData, setSearchValue, searchValue } = useContext(SearchContext)
   const { activeNav, setActiveNav } = useContext(StateContext)
@@ -19,6 +20,17 @@ export default function DevStashGrid() {
 
 
   const data = tagData.isTagData ? tagData.data : searchData.isSearchData ? searchData.data : activeNav === "home" ? stashData : archiveData
+
+
+  if (!isLoaded) {
+    return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 8 }).map((_, index) => (
+        <SkeletonCard key={index} />
+      ))}
+    </div>
+  }
+
+
 
   if (tagData.isTagData && data.length === 0) {
     return (

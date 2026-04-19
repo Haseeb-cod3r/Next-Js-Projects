@@ -45,7 +45,6 @@ export default function DevStashCard({ devStash }) {
     if (action === "Delete") {
       const newData = archiveData.filter((obj) => obj.id !== devStash.id)
       setArchiveData(sortData("date", newData))
-      console.log(newData);
     }
     if (action === "Remove Archive") {
       const newData = archiveData.filter((obj) => obj.id === devStash.id)
