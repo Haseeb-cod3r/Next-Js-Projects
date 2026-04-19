@@ -2,7 +2,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppData from "@/contexts/AppData";
 import ModalData from "@/contexts/ModalData";
-import Utility from "@/contexts/Utility";
+import State from "@/contexts/State";
+import Search from "@/contexts/Search";
+import Tag from "@/contexts/Tag";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,7 +26,11 @@ export default function RootLayout({ children }) {
       <body className="bg-gray-100 text-gray-900">
         <AppData>
           <ModalData>
-            <Utility>{children}</Utility>
+            <State>
+              <Tag>
+                <Search>{children}</Search>
+              </Tag>
+            </State>
           </ModalData>
         </AppData>
       </body>

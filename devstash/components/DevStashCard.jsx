@@ -1,10 +1,11 @@
 'use client'
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { MoreHorizontal, Eye, Calendar, Pin, } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
-import { UtilityContext } from '@/contexts/Utility'
+import { StateContext } from '@/contexts/State'
+import { SearchContext } from '@/contexts/Search'
 
 
 const stashMenu = ['Edit', 'Archive', 'Delete']
@@ -14,10 +15,31 @@ const archiveMenu = ['Edit', 'Remove Archive', 'Delete']
 export default function DevStashCard({ devStash }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
-  const { setIsModalOpen, setFormData, setTags, setIsEditMode } = useContext(ModalContext)
-  const { sortData } = useContext(UtilityContext)
+  const { setIsModalOpen, setFormData, setTagValue, setIsEditMode } = useContext(ModalContext)
+  const { sortData } = useContext(StateContext)
+  const { searchValue } = useContext(SearchContext)
 
 
+  function HighlightedText(text, highlight) {
+    if (!highlight.trim()) {
+      return <span>{text}</span>;
+    }
+    const regex = new RegExp(`(${highlight})`, "gi");
+    const parts = text.split(regex);
+    return (
+      <span>
+        {parts.map((part, index) =>
+          part.toLowerCase() === highlight.toLowerCase() ? (
+            <mark key={index} className="bg-blue-200 text-blue-700 rounded-sm font-medium">
+              {part}
+            </mark>
+          ) : (
+            <span key={index}>{part}</span>
+          )
+        )}
+      </span>
+    );
+  };
 
   function handleArchiveAction(action) {
     if (action === "Delete") {
@@ -52,7 +74,7 @@ export default function DevStashCard({ devStash }) {
         isPinned: dataForForm[0].isPinned,
         pinnedAt: dataForForm[0].pinnedAt
       })
-      setTags(dataForForm[0].tags.join(" "))
+      setTagValue(dataForForm[0].tags.join(" "))
       setIsEditMode({ edit: true, isArchiveEdit: true })
       setIsModalOpen(true)
     }
@@ -90,7 +112,7 @@ export default function DevStashCard({ devStash }) {
         isPinned: dataForForm[0].isPinned,
         pinnedAt: dataForForm[0].pinnedAt
       })
-      setTags(dataForForm[0].tags.join(" "))
+      setTagValue(dataForForm[0].tags.join(" "))
       setIsEditMode({ edit: true, isArchiveEdit: false })
       setIsModalOpen(true)
     }
@@ -126,7 +148,7 @@ export default function DevStashCard({ devStash }) {
             />
           </div>
           <div>
-            <p className="font-semibold text-sm text-gray-900 leading-tight">{devStash.title}</p>
+            <p className="font-semibold text-sm text-gray-900 leading-tight">{HighlightedText(devStash.title, searchValue)}</p>
             <p className="text-xs text-gray-400 mt-0.5">{devStash.url}</p>
           </div>
         </div>

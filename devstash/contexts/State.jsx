@@ -1,32 +1,14 @@
 "use client"
 
 
-import React, { createContext, useContext } from 'react'
-import { AppContext } from './AppData'
+import React, { createContext, useState } from 'react'
 
-export const UtilityContext = createContext({})
+
+export const StateContext = createContext({})
 export default function Utility({ children }) {
-  const { setTagData } = useContext(AppContext)
+  const [activeNav, setActiveNav] = useState('home')
+  const [sort, setSort] = useState('Latest')
 
-  function sortAccTags(tagsArray, data) {
-    if (!tagsArray || tagsArray.length === 0) {
-      setTagData({ isTagData: false, data: [] })
-      return
-    }
-    if (tagsArray) {
-      const filterData = data.filter((item) => {
-
-        const isTrue = tagsArray.every((arrayTag) => {
-          const isTrue = item.tags.some((itemTag) => {
-            return itemTag === arrayTag
-          })
-          return isTrue
-        })
-        return isTrue
-      })
-      setTagData({ isTagData: true, data: filterData })
-    }
-  }
   function sortData(sortAction, data, setData) {
     if (sortAction === "date") {
       const sortedData = [...data.sort((a, b) => new Date(b.created) - new Date(a.created))]
@@ -57,8 +39,8 @@ export default function Utility({ children }) {
   }
 
   return (
-    <UtilityContext.Provider value={{ sortData, sortAccTags }}>
+    <StateContext.Provider value={{ sortData, activeNav, setActiveNav, sort, setSort }}>
       {children}
-    </UtilityContext.Provider>
+    </StateContext.Provider>
   )
 }

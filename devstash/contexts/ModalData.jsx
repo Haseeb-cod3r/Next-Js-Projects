@@ -19,12 +19,12 @@ export default function ModalData({ children }) {
 
   })
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [tags, setTags] = useState("")
+  const [tagValue, setTagValue] = useState("")
   const [isEditMode, setIsEditMode] = useState({ edit: false, isArchiveEdit: false })
 
 
   return (
-    <ModalContext.Provider value={{ isModalOpen, setIsModalOpen, formData, setFormData, tags, setTags, isEditMode, setIsEditMode }}>
+    <ModalContext.Provider value={{ isModalOpen, setIsModalOpen, formData, setFormData, tagValue, setTagValue, isEditMode, setIsEditMode }}>
       {children}
     </ModalContext.Provider>
   )

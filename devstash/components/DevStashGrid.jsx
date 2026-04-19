@@ -3,15 +3,22 @@ import DevStashCard from './DevStashCard'
 import { AppContext } from '@/contexts/AppData'
 import { Archive, Plus, Search } from 'lucide-react'
 import { ModalContext } from '@/contexts/ModalData'
+import { SearchContext } from '@/contexts/Search'
+import { TagContext } from '@/contexts/Tag'
+import { StateContext } from '@/contexts/State'
 
 
 
 export default function DevStashGrid() {
 
-  const { stashData, activeNav, archiveData, tagData, setActiveNav } = useContext(AppContext)
+  const { stashData, archiveData } = useContext(AppContext)
   const { setIsModalOpen } = useContext(ModalContext)
+  const { searchData, setSearchValue, searchValue } = useContext(SearchContext)
+  const { activeNav, setActiveNav } = useContext(StateContext)
+  const { tagData } = useContext(TagContext)
 
-  const data = tagData.isTagData ? tagData.data : activeNav === "home" ? stashData : archiveData
+
+  const data = tagData.isTagData ? tagData.data : searchData.isSearchData ? searchData.data : activeNav === "home" ? stashData : archiveData
 
   if (tagData.isTagData && data.length === 0) {
     return (
@@ -25,6 +32,34 @@ export default function DevStashGrid() {
         </p>
       </div>
     )
+  }
+  if (searchData.isSearchData && data.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        {/* Search Icon with a "no" slash or just low opacity */}
+        <div className="relative mb-6">
+          <Search size={80} className="text-gray-200" />
+          <div className="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 border-4 border-white"></div>
+        </div>
+
+        <h3 className="text-xl font-semibold text-gray-900">No results found</h3>
+
+        <p className="mt-2 text-gray-500 max-w-sm">
+          We couldn't find anything matching **"{searchValue}"**.
+          Try checking for typos or using more general keywords.
+        </p>
+
+        {/* Action to reset search */}
+        <button
+          onClick={() => {
+            setSearchValue("")
+          }}
+          className="mt-6 text-sm font-medium text-blue-600 hover:underline cursor-pointer"
+        >
+          Clear search and view all items
+        </button>
+      </div>
+    );
   }
   if (activeNav === "home" && data.length === 0) {
     return (

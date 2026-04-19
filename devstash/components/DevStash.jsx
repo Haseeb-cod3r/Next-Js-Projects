@@ -3,16 +3,15 @@
 import { useContext, useState } from 'react'
 import { ArrowUpDown } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
-import { UtilityContext } from '@/contexts/Utility'
+import { StateContext } from '@/contexts/State'
 import DevStashGrid from './DevStashGrid'
 
 export const SORT_OPTIONS = ["Latest", "Oldest", "Most viewed", "Least viewed"];
 
 export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
-  const [sort, setSort] = useState('Latest')
-  const { stashData, activeNav, archiveData, setArchiveData, setStashData } = useContext(AppContext)
-  const { sortData } = useContext(UtilityContext)
+  const { stashData, archiveData, setArchiveData, setStashData, } = useContext(AppContext)
+  const { sortData, sort, setSort, activeNav } = useContext(StateContext)
 
 
   return (

@@ -1,22 +1,24 @@
 "use client"
 
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { X, Link, FileText, Tag, AlignLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
-import { UtilityContext } from '@/contexts/Utility'
+import { StateContext } from '@/contexts/State'
+
+
 export default function Modal({ setIsModalOpen }) {
   const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
-  const { formData, setFormData, tags, setTags, isEditMode } = useContext(ModalContext)
-  const { sortData } = useContext(UtilityContext)
+  const { formData, setFormData, tagValue, setTagValue, isEditMode, setIsEditMode } = useContext(ModalContext)
+  const { sortData, activeNav } = useContext(StateContext)
 
 
 
 
   function handleOnChange(e, key) {
     if (key === "tags") {
-      setTags(e.target.value)
+      setTagValue(e.target.value)
       setFormData({ ...formData, [key]: e.target.value.split(",") })
       return
     }
@@ -37,8 +39,9 @@ export default function Modal({ setIsModalOpen }) {
       pinnedAt: null
 
     })
-    setTags("")
+    setTagValue("")
     setIsModalOpen(false)
+    setIsEditMode({ edit: false, isArchiveEdit: false })
   }
   function validateForm() {
     if (formData.url === "") {
@@ -133,13 +136,23 @@ export default function Modal({ setIsModalOpen }) {
       setStashData(sortData("date", newEditedData))
       resetAndCloseForm()
 
-    } else {
+    } else if (activeNav === "home") {
       const data = [{
         ...formData, id: crypto.randomUUID(), created: Date.now()
       }, ...stashData,]
       setStashData(sortData("date", data))
       resetAndCloseForm()
+    } else if (activeNav === "archived") {
+      const data = [{
+        ...formData, id: crypto.randomUUID(), created: Date.now(), isArchived: true
+      }, ...archiveData,]
+      setArchiveData(sortData("date", data))
+      resetAndCloseForm()
     }
+
+
+
+
   }
 
 
@@ -230,7 +243,7 @@ export default function Modal({ setIsModalOpen }) {
             <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <Tag size={15} className="text-gray-400 shrink-0" />
               <input
-                value={tags}
+                value={tagValue}
                 onChange={(e) => handleOnChange(e, "tags")}
                 type="text"
                 placeholder="Framework, Tools, Design  (comma separated)"
@@ -253,7 +266,7 @@ export default function Modal({ setIsModalOpen }) {
             onClick={() => addData()}
             className="flex-1 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors"
           >
-            {isEditMode.edit ? "Edit DevStash" : "Add DevStash"}
+            {isEditMode.isArchiveEdit ? "Edit Archive" : isEditMode.edit ? "Edit Stash" : activeNav === "home" ? "Add DevStash" : "Add Archive"}
           </button>
         </div>
 

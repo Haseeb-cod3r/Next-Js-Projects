@@ -1,5 +1,5 @@
 "use client"
-import React, { createContext, useState } from 'react'
+import React, { createContext,  useState } from 'react'
 
 export const AppContext = createContext({})
 export default function AppData({ children }) {
@@ -123,7 +123,9 @@ export default function AppData({ children }) {
       isArchived: false,
       isPinned: false,
       isLatest: false
-    },
+    }
+  ])
+  const [archiveData, setArchiveData] = useState([
     {
       id: 11,
       title: "CodePen",
@@ -132,7 +134,7 @@ export default function AppData({ children }) {
       tags: ["Practice", "Community", "CSS", "JavaScript"],
       views: 265,
       created: "25 Jun 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -144,7 +146,7 @@ export default function AppData({ children }) {
       tags: ["CSS", "Tips", "Design", "Learning"],
       views: 178,
       created: "14 Jun 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -156,7 +158,7 @@ export default function AppData({ children }) {
       tags: ["Learning", "Practice", "Community", "Tutorial"],
       views: 390,
       created: "01 Jun 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -168,7 +170,7 @@ export default function AppData({ children }) {
       tags: ["Design", "Collaboration", "Tools"],
       views: 230,
       created: "20 May 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -180,7 +182,7 @@ export default function AppData({ children }) {
       tags: ["Reference", "Compatibility", "CSS", "HTML"],
       views: 155,
       created: "03 May 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -192,7 +194,7 @@ export default function AppData({ children }) {
       tags: ["CSS", "Framework", "Tools", "Layout"],
       views: 420,
       created: "15 Apr 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -204,7 +206,7 @@ export default function AppData({ children }) {
       tags: ["JavaScript", "Learning", "Tutorial", "Reference"],
       views: 310,
       created: "08 Apr 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -216,7 +218,7 @@ export default function AppData({ children }) {
       tags: ["Dev Tools", "Performance", "Tools", "Framework"],
       views: 198,
       created: "22 Mar 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -228,7 +230,7 @@ export default function AppData({ children }) {
       tags: ["CSS", "Tips", "Reference", "Tutorial"],
       views: 275,
       created: "12 Feb 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
     },
@@ -240,22 +242,13 @@ export default function AppData({ children }) {
       tags: ["Reference", "HTML", "CSS", "JavaScript", "Learning"],
       views: 340,
       created: "05 Jan 2024",
-      isArchived: false,
+      isArchived: true,
       isPinned: false,
       isLatest: false
-    },
-  ])
-
-
-  const [archiveData, setArchiveData] = useState([])
-  const [tags, setTags] = useState([])
-  const [tagData, setTagData] = useState({ isTagData: false, data: [] })
-  const [activeNav, setActiveNav] = useState('home')
-
-
+    },])
 
   return (
-    <AppContext.Provider value={{ stashData, setStashData, archiveData, setArchiveData, activeNav, setActiveNav, tagData, setTagData, tags, setTags }}>
+    <AppContext.Provider value={{ stashData, setStashData, archiveData, setArchiveData}}>
       {children}
     </AppContext.Provider>
   )

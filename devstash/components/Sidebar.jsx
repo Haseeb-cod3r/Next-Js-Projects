@@ -5,35 +5,25 @@
 import { useContext, useEffect, useState } from 'react'
 import { Bookmark, Home, Archive } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
-import { UtilityContext } from '@/contexts/Utility'
+import { SearchContext } from '@/contexts/Search'
+import { TagContext } from '@/contexts/Tag'
+import { StateContext } from '@/contexts/State'
 
 
 
 export default function Sidebar() {
 
-  const { activeNav, setActiveNav, stashData, archiveData, tags, setTags } = useContext(AppContext)
-  const { sortAccTags } = useContext(UtilityContext)
+  const { stashData, archiveData } = useContext(AppContext)
+  const { setSearchValue } = useContext(SearchContext)
+  const { sortAccTags, tags, generateTags } = useContext(TagContext)
+  const { activeNav, setActiveNav, setSort } = useContext(StateContext)
   const [checkedTags, setCheckedTags] = useState([])
   const [appliedTags, setAppliedTags] = useState([])
 
   useEffect(() => {
-    const tagCounts = {};
+
     const currentSource = activeNav === 'home' ? stashData : archiveData;
-    currentSource.forEach((item) => {
-      item.tags.forEach((tag) => {
-        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-      });
-    });
-    const allTagsFilter = Object.keys(tagCounts).map((tagName) => ({
-      name: tagName,
-      count: tagCounts[tagName],
-    }));
-    allTagsFilter.sort((a, b) => a.name.localeCompare(b.name));
-    if (!(allTagsFilter.length === tags.length)) {
-      setAppliedTags([])
-      setCheckedTags([])
-    }
-    setTags(allTagsFilter);
+    generateTags(currentSource, setAppliedTags, setCheckedTags)
 
   }, [stashData, activeNav, archiveData])
 
@@ -83,6 +73,8 @@ export default function Sidebar() {
           onClick={() => {
             setAppliedTags([])
             setCheckedTags([])
+            setSearchValue("")
+            setSort("Latest")
             setActiveNav('home')
           }}
         />
@@ -94,6 +86,8 @@ export default function Sidebar() {
           onClick={() => {
             setAppliedTags([])
             setCheckedTags([])
+            setSearchValue("")
+            setSort("Latest")
             setActiveNav('archived')
           }}
         />
