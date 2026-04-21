@@ -87,8 +87,9 @@ export default function Modal({ setIsModalOpen }) {
 
     return true
   }
-  function addData() {
+ async function addData() {
     if (!validateForm()) return
+
     if (isEditMode.edit && isEditMode.isArchiveEdit) {
       const newEditedData = archiveData.map((obj) => {
         if (obj.id === formData.id) {

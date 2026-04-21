@@ -1,7 +1,6 @@
 'use client'
 
-
-
+import { usePathname } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
 import { Bookmark, Home, Archive } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
@@ -9,17 +8,28 @@ import { SearchContext } from '@/contexts/Search'
 import { TagContext } from '@/contexts/Tag'
 import { StateContext } from '@/contexts/State'
 import SkeletonTag from './SkeletonTag'
+import Link from 'next/link'
 
 
 
 export default function Sidebar() {
-
+  const pathname = usePathname()
   const { stashData, archiveData, isLoaded } = useContext(AppContext)
   const { setSearchValue } = useContext(SearchContext)
   const { sortAccTags, tags, generateTags } = useContext(TagContext)
   const { activeNav, setActiveNav, setSort } = useContext(StateContext)
   const [checkedTags, setCheckedTags] = useState([])
   const [appliedTags, setAppliedTags] = useState([])
+
+  useEffect(() => {
+    if (pathname === '/archive') {
+      setActiveNav('archived')
+    } else if (pathname === "/") {
+      setActiveNav('home')
+    }
+  }, [pathname, setActiveNav])
+
+
 
   useEffect(() => {
 
@@ -76,10 +86,9 @@ export default function Sidebar() {
             setCheckedTags([])
             setSearchValue("")
             setSort("Latest")
-            setActiveNav('home')
+
           }}
         />
-
         <NavItem
           icon={<Archive size={15} />}
           label="Archived"
@@ -89,7 +98,7 @@ export default function Sidebar() {
             setCheckedTags([])
             setSearchValue("")
             setSort("Latest")
-            setActiveNav('archived')
+
           }}
         />
       </nav>
@@ -134,16 +143,18 @@ export default function Sidebar() {
 
 function NavItem({ icon, label, active, onClick }) {
   return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-colors
+    <Link href={label === "Home" ? "/" : "/archive"}>
+      <button
+        onClick={onClick}
+        className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-colors
         ${active
-          ? 'bg-gray-100 font-semibold text-gray-900'
-          : 'text-gray-500 font-normal hover:bg-gray-50'
-        }`}
-    >
-      {icon}
-      {label}
-    </button>
+            ? 'bg-gray-100 font-semibold text-gray-900'
+            : 'text-gray-500 font-normal hover:bg-gray-50'
+          }`}
+      >
+        {icon}
+        {label}
+      </button>
+    </Link>
   )
 }

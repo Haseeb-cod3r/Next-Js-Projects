@@ -1,5 +1,5 @@
 "use client"
-import { Island_Moments } from 'next/font/google'
+
 import React, { createContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -7,8 +7,6 @@ export const AppContext = createContext({})
 export default function AppData({ children }) {
 
   const [isLoaded, setIsLoaded] = useState(false)
-
-
 
   const staData = [{
     id: 1,
@@ -132,7 +130,6 @@ export default function AppData({ children }) {
   }
   ]
 
-
   const [stashData, setStashData] = useState([])
 
 
@@ -140,17 +137,30 @@ export default function AppData({ children }) {
 
 
   useEffect(() => {
-    const saved = localStorage.getItem("stash");
+    const savedStash = localStorage.getItem("stash");
+    const savedArchive = localStorage.getItem("archive");
     setStashData(() => {
-      if (!saved) return staData;
+      if (!savedStash) return staData;
 
       try {
-        return JSON.parse(saved);
+        return JSON.parse(savedStash);
       } catch (error) {
 
         toast.error("Your Stash Data has been Corrupted we have provided some default Data");
         localStorage.removeItem("Stash");
         return staData;
+
+      }
+    });
+    setArchiveData(() => {
+      if (!savedArchive) return [];
+
+      try {
+        return JSON.parse(savedArchive);
+      } catch (error) {
+
+        toast.error("Your Archive Data has been Corrupted Please build you archive again");
+        localStorage.removeItem("archive");
 
       }
     });
@@ -168,6 +178,7 @@ export default function AppData({ children }) {
 
   useEffect(() => {
     if (isLoaded) {
+      console.log("object");
       localStorage.setItem("archive", JSON.stringify(archiveData));
     }
   }, [archiveData, isLoaded]);

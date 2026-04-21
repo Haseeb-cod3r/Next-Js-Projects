@@ -7,6 +7,7 @@ import { SearchContext } from '@/contexts/Search'
 import { TagContext } from '@/contexts/Tag'
 import { StateContext } from '@/contexts/State'
 import SkeletonCard from './SkeletonCard'
+import Link from 'next/link'
 
 
 
@@ -24,7 +25,7 @@ export default function DevStashGrid() {
 
   if (!isLoaded) {
     return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {Array.from({ length: 8 }).map((_, index) => (
+      {Array.from({ length: 12 }).map((_, index) => (
         <SkeletonCard key={index} />
       ))}
     </div>
@@ -48,7 +49,7 @@ export default function DevStashGrid() {
   if (searchData.isSearchData && data.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        {/* Search Icon with a "no" slash or just low opacity */}
+
         <div className="relative mb-6">
           <Search size={80} className="text-gray-200" />
           <div className="absolute top-0 right-0 h-4 w-4 rounded-full bg-red-500 border-4 border-white"></div>
@@ -60,8 +61,6 @@ export default function DevStashGrid() {
           We couldn't find anything matching **"{searchValue}"**.
           Try checking for typos or using more general keywords.
         </p>
-
-        {/* Action to reset search */}
         <button
           onClick={() => {
             setSearchValue("")
@@ -106,15 +105,17 @@ export default function DevStashGrid() {
         <h3 className="text-xl font-semibold text-gray-900">Your Archive is empty</h3>
 
         <p className="mt-2 text-gray-500 max-w-sm">
-          Items you move to the Archive will appear here. It's a great way to keep your Stash organized and focused.
+          Items you move to the Archive will appear here. It's a great way to keep your Stash secret and organized.
         </p>
 
+<Link href={"/"}>
         <button
           onClick={() => setActiveNav("home")}
           className="mt-6 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
         >
           Back to Stash
         </button>
+        </Link>
       </div>
     );
   }
@@ -128,9 +129,4 @@ export default function DevStashGrid() {
     </div>
 
   )
-
-
-
-
-
 }
