@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useContext, useState } from 'react'
@@ -6,27 +7,27 @@ import { AppContext } from '@/contexts/AppData'
 import { StateContext } from '@/contexts/State'
 import DevStashGrid from './DevStashGrid'
 
-export const SORT_OPTIONS = ["Latest", "Oldest", "Most viewed", "Least viewed"];
+export const SORT_OPTIONS = ['Latest', 'Oldest', 'Most viewed', 'Least viewed']
 
 export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
-  const { stashData, archiveData, setArchiveData, setStashData, } = useContext(AppContext)
+  const { stashData, archiveData, setArchiveData, setStashData } = useContext(AppContext)
   const { sortData, sort, setSort, activeNav } = useContext(StateContext)
-
 
   return (
     <div>
-
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-gray-900">{activeNav === "home" ? "All Stash" : "All Archive"}</h1>
+        <h1 className="text-lg lg:text-xl font-bold text-gray-900">
+          {activeNav === 'home' ? 'All Stash' : 'All Archive'}
+        </h1>
 
         <div className="relative">
           <button
             onClick={() => setSortOpen(p => !p)}
-            className="flex items-center gap-2 border border-gray-200 bg-white rounded-lg px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 border border-gray-200 bg-white rounded-lg px-3 lg:px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
             <ArrowUpDown size={13} />
-            Sort by
+            <span className="hidden sm:inline">Sort by</span>
           </button>
 
           {sortOpen && (
@@ -35,8 +36,11 @@ export default function DevStash() {
                 <button
                   key={opt}
                   onClick={() => {
-                    setSort(opt); setSortOpen(false);
-                    activeNav === "home" ? sortData(opt, stashData, setStashData) : sortData(opt, archiveData, setArchiveData)
+                    setSort(opt)
+                    setSortOpen(false)
+                    activeNav === 'home'
+                      ? sortData(opt, stashData, setStashData)
+                      : sortData(opt, archiveData, setArchiveData)
                   }}
                   className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                     ${sort === opt ? 'font-semibold text-gray-900 bg-gray-50' : 'text-gray-600'}`}
@@ -49,10 +53,7 @@ export default function DevStash() {
         </div>
       </div>
 
-
-
       <DevStashGrid />
-
     </div>
   )
 }
