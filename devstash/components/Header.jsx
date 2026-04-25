@@ -1,6 +1,6 @@
 
 'use client'
-
+import { Show, SignInButton, useAuth, UserButton } from '@clerk/nextjs'
 import { useContext, useEffect } from 'react'
 import { Search, Plus, User } from 'lucide-react'
 import Modal from './Modal'
@@ -14,7 +14,7 @@ export default function Header() {
   const { stashData, archiveData } = useContext(AppContext)
   const { searchValue, setSearchValue, sortSearchData } = useContext(SearchContext)
   const { activeNav } = useContext(StateContext)
-
+  const { isLoaded } = useAuth()
   useEffect(() => {
     const currSource = activeNav === 'home' ? stashData : archiveData
     sortSearchData(currSource, searchValue)
@@ -35,23 +35,43 @@ export default function Header() {
         />
       </div>
 
-     
+
       <div className="flex items-center gap-2 lg:gap-3">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-medium px-3 lg:px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-medium px-3 lg:px-4 py-2 rounded-lg transition-colors cursor-pointer"
         >
           <Plus size={15} />
           <span className="hidden sm:inline">
             {activeNav === 'home' ? 'Add DevStash' : 'Add Archive'}
           </span>
         </button>
-        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
-          <User size={16} className="text-gray-500" />
+
+
+
+        <div className="flex items-center w-[10px]">
+          {isLoaded ? (
+            <>
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </Show>
+              <Show when="signed-in">
+                <UserButton />
+              </Show>
+            </>
+          ) : <div className="flex items-center gap-3">
+            <div className="h-7 w-7 bg-slate-200 animate-pulse rounded-full"></div>
+          </div>}
+
         </div>
+
       </div>
 
-      {isModalOpen ? <Modal setIsModalOpen={setIsModalOpen} /> : ''}
-    </header>
+      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
+    </header >
   )
 }
