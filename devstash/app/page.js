@@ -2,14 +2,15 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { Toaster } from "react-hot-toast";
 import DevStash from "@/components/DevStash";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Toaster position="top-center" />
       <Sidebar />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 h-full overflow-hidden">
         <Header />
-        <main className="p-8">
+        <main className="flex-1 overflow-y-auto p-8 bg-gray-50">
           <DevStash />
         </main>
       </div>

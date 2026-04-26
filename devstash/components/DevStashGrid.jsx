@@ -58,7 +58,7 @@ export default function DevStashGrid() {
         <h3 className="text-xl font-semibold text-gray-900">No results found</h3>
 
         <p className="mt-2 text-gray-500 max-w-sm">
-          We couldn't find anything matching **"{searchValue}"**.
+          We couldn't find anything matching your search.
           Try checking for typos or using more general keywords.
         </p>
         <button

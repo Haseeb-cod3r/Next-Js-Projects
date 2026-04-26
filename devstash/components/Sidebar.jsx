@@ -10,8 +10,7 @@ import { TagContext } from '@/contexts/Tag'
 import { StateContext } from '@/contexts/State'
 import SkeletonTag from './SkeletonTag'
 import Link from 'next/link'
-import { useAuth, useUser } from '@clerk/nextjs'
-
+import { useAuth } from '@clerk/nextjs'
 
 
 export default function Sidebar() {
@@ -23,8 +22,8 @@ export default function Sidebar() {
   const [checkedTags, setCheckedTags] = useState([])
   const [appliedTags, setAppliedTags] = useState([])
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { isSignedIn } = useAuth();
 
-const { isSignedIn} = useAuth();
 
   useEffect(() => {
     if (pathname === '/archive') setActiveNav('archived')
@@ -74,10 +73,10 @@ const { isSignedIn} = useAuth();
 
       <nav className="px-3 py-4 flex flex-col gap-0.5">
         <NavItem
-        isSignedIn={isSignedIn}
+          isSignedIn={isSignedIn}
           icon={<Home size={15} />}
           label="Home"
-          active={activeNav === 'home'}
+          active={pathname === '/'}
           onClick={() => {
             setAppliedTags([])
             setCheckedTags([])
@@ -87,10 +86,10 @@ const { isSignedIn} = useAuth();
           }}
         />
         <NavItem
-        isSignedIn={isSignedIn}
+          isSignedIn={isSignedIn}
           icon={<Archive size={15} />}
           label="Archived"
-          active={activeNav === 'archived'}
+          active={pathname === '/archive'}
           onClick={() => {
             setAppliedTags([])
             setCheckedTags([])
@@ -188,13 +187,8 @@ function NavItem({ icon, label, active, onClick, isSignedIn }) {
             {icon}
             {label}
           </div>
-          {!isSignedIn && <div> <Lock size={18}/></div>}
-
-
+          {!isSignedIn && <div> <Lock size={18} /></div>}
         </div>}
-
-
-
       </button>
     </Link>
   )

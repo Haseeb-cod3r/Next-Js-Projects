@@ -73,7 +73,7 @@ export default function DevStashCard({ devStash }) {
         isPinned: dataForForm[0].isPinned,
         pinnedAt: dataForForm[0].pinnedAt
       })
-      setTagValue(dataForForm[0].tags.join(" "))
+      setTagValue(dataForForm[0].tags.join(", "))
       setIsEditMode({ edit: true, isArchiveEdit: true })
       setIsModalOpen(true)
     }
@@ -111,7 +111,7 @@ export default function DevStashCard({ devStash }) {
         isPinned: dataForForm[0].isPinned,
         pinnedAt: dataForForm[0].pinnedAt
       })
-      setTagValue(dataForForm[0].tags.join(" "))
+      setTagValue(dataForForm[0].tags.join(", "))
       setIsEditMode({ edit: true, isArchiveEdit: false })
       setIsModalOpen(true)
     }
@@ -133,10 +133,10 @@ export default function DevStashCard({ devStash }) {
 
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-shadow relative">
+    <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-shadow relative overflow-hidden">
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
           <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
             <img
               src={`https://www.google.com/s2/favicons?domain=${devStash.url}&sz=32`}
@@ -146,14 +146,18 @@ export default function DevStashCard({ devStash }) {
               className="object-contain"
             />
           </div>
-          <div>
-            <p className="font-semibold text-sm text-gray-900 leading-tight">{HighlightedText(devStash.title, searchValue)}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{devStash.url}</p>
+
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-sm text-gray-900 leading-tight truncate">
+              {HighlightedText(devStash.title, searchValue)}
+            </p>
+            <p title='url' className="text-xs text-gray-400 mt-0.5 truncate break-all">
+              {devStash.url}
+            </p>
           </div>
         </div>
 
-
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <button
             onClick={() => setMenuOpen(p => !p)}
             className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
@@ -168,8 +172,7 @@ export default function DevStashCard({ devStash }) {
                   key={action}
                   onClick={() => {
                     setMenuOpen(false)
-                    devStash.isArchived ? handleArchiveAction(action) :
-                      handleStashAction(action)
+                    devStash.isArchived ? handleArchiveAction(action) : handleStashAction(action)
                   }}
                   className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                     ${action === 'Delete' ? 'text-red-500' : 'text-gray-700'}`}
@@ -182,29 +185,27 @@ export default function DevStashCard({ devStash }) {
         </div>
       </div>
 
-
-      <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
+      <p className="text-sm text-gray-500 leading-relaxed line-clamp-3 break-words">
         {devStash.description}
       </p>
 
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5 overflow-hidden mt-auto">
         {devStash.tags.map(tag => (
           <span
             key={crypto.randomUUID()}
-            className="text-xs bg-gray-100 text-gray-500 font-medium px-2.5 py-0.5 rounded-full"
+            className="text-xs bg-gray-100 text-gray-500 font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap"
           >
             {tag}
-          </span>
+          </span >
         ))}
       </div>
 
-
-      <div className="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-100">
-        <span className="flex items-center gap-1">
+      <div className="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-100 mt-auto">
+        <span className="flex items-center gap-1 flex-shrink-0">
           <Eye size={11} />
           {devStash.views}
         </span>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1 flex-shrink-0">
           <Calendar size={11} />
           {new Date(devStash.created).toLocaleDateString("en-US", {
             day: "numeric",
@@ -212,8 +213,11 @@ export default function DevStashCard({ devStash }) {
             year: "numeric"
           })}
         </span>
-        <span onClick={() => { devStash.isArchived ? sortPin(archiveData, setArchiveData) : sortPin(stashData, setStashData) }} className='flex items-center self-end ml-auto cursor-pointer'>
-          <Pin size={15} className={`${devStash.isPinned ? "fill-black" : ""}`} />
+        <span
+          onClick={() => { devStash.isArchived ? sortPin(archiveData, setArchiveData) : sortPin(stashData, setStashData) }}
+          className='flex items-center cursor-pointer ml-auto hover:text-black transition-colors'
+        >
+          <Pin size={15} className={`${devStash.isPinned ? "fill-black text-black" : ""}`} />
         </span>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { ArrowUpDown } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
 import { StateContext } from '@/contexts/State'
 import DevStashGrid from './DevStashGrid'
+import { usePathname } from 'next/navigation';
 
 export const SORT_OPTIONS = ['Latest', 'Oldest', 'Most viewed', 'Least viewed']
 
@@ -13,12 +14,12 @@ export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
   const { stashData, archiveData, setArchiveData, setStashData } = useContext(AppContext)
   const { sortData, sort, setSort, activeNav } = useContext(StateContext)
-
+const pathname = usePathname()
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-lg lg:text-xl font-bold text-gray-900">
-          {activeNav === 'home' ? 'All Stash' : 'All Archive'}
+          {pathname === '/' ? 'All Stash' : 'All Archive'}
         </h1>
 
         <div className="relative">

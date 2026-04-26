@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { X, Link, FileText, Tag, AlignLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AppContext } from '@/contexts/AppData'
@@ -13,8 +13,10 @@ export default function Modal({ setIsModalOpen }) {
   const { formData, setFormData, tagValue, setTagValue, isEditMode, setIsEditMode } = useContext(ModalContext)
   const { sortData, activeNav } = useContext(StateContext)
 
-
-
+  const urlRef = useRef(null)
+  const titleRef = useRef(null)
+  const desRef = useRef(null)
+  const tagRef = useRef(null)
 
   function handleOnChange(e, key) {
     if (key === "tags") {
@@ -48,6 +50,10 @@ export default function Modal({ setIsModalOpen }) {
       toast.error("Please provide a URL for your stash")
       return false
 
+    }
+    if (!/^(https?:\/\/)?([\w\d-]+\.)+[\w-]{2,}(\/.*)?$/i.test(formData.url)) {
+      toast.error("Please write a correct URL")
+      return false
     }
     if (formData.title === "") {
       toast.error("Please provide a title for your stash")
@@ -87,7 +93,7 @@ export default function Modal({ setIsModalOpen }) {
 
     return true
   }
- async function addData() {
+  async function addData() {
     if (!validateForm()) return
 
     if (isEditMode.edit && isEditMode.isArchiveEdit) {
@@ -155,6 +161,20 @@ export default function Modal({ setIsModalOpen }) {
 
 
   }
+  function handleOnKeyDown(e) {
+    if (e.key === "Enter" && e.target.name === "URL") {
+
+      titleRef.current.focus()
+    } else if (e.key === "Enter" && e.target.name === "title") {
+
+      desRef.current.focus()
+    } else if (e.key === "Enter" && e.target.name === "description") {
+
+      tagRef.current.focus()
+    } else if (e.key === "Enter" && e.target.name === "tags") {
+      addData()
+    }
+  }
 
 
   return (
@@ -193,6 +213,9 @@ export default function Modal({ setIsModalOpen }) {
             <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <Link size={15} className="text-gray-400 shrink-0" />
               <input
+                name='URL'
+                onKeyDown={handleOnKeyDown}
+                ref={urlRef}
                 value={formData.url}
                 onChange={(e) => handleOnChange(e, "url")}
                 type="url"
@@ -210,6 +233,9 @@ export default function Modal({ setIsModalOpen }) {
             <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <FileText size={15} className="text-gray-400 shrink-0" />
               <input
+                name='title'
+                onKeyDown={handleOnKeyDown}
+                ref={titleRef}
                 value={formData.title}
                 onChange={(e) => handleOnChange(e, "title")}
                 type="text"
@@ -227,6 +253,9 @@ export default function Modal({ setIsModalOpen }) {
             <div className="flex items-start gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <AlignLeft size={15} className="text-gray-400 shrink-0 mt-0.5" />
               <textarea
+                name='description'
+                onKeyDown={handleOnKeyDown}
+                ref={desRef}
                 value={formData.description}
                 onChange={(e) => handleOnChange(e, "description")}
                 placeholder="What is this link about..."
@@ -244,6 +273,9 @@ export default function Modal({ setIsModalOpen }) {
             <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
               <Tag size={15} className="text-gray-400 shrink-0" />
               <input
+                name='tags'
+                onKeyDown={handleOnKeyDown}
+                ref={tagRef}
                 value={tagValue}
                 onChange={(e) => handleOnChange(e, "tags")}
                 type="text"

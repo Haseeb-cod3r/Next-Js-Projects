@@ -2,26 +2,31 @@
 'use client'
 import { Show, SignInButton, useAuth, UserButton } from '@clerk/nextjs'
 import { useContext, useEffect } from 'react'
-import { Search, Plus, User } from 'lucide-react'
+import { Search, Plus } from 'lucide-react'
 import Modal from './Modal'
 import { ModalContext } from '@/contexts/ModalData'
 import { SearchContext } from '@/contexts/Search'
 import { AppContext } from '@/contexts/AppData'
 import { StateContext } from '@/contexts/State'
+import { usePathname } from 'next/navigation'
+
 
 export default function Header() {
   const { isModalOpen, setIsModalOpen } = useContext(ModalContext)
   const { stashData, archiveData } = useContext(AppContext)
   const { searchValue, setSearchValue, sortSearchData } = useContext(SearchContext)
   const { activeNav } = useContext(StateContext)
-  const { isLoaded } = useAuth()
+  const { isLoaded,isSignedIn } = useAuth()
+  const pathname = usePathname()
+
+
   useEffect(() => {
     const currSource = activeNav === 'home' ? stashData : archiveData
     sortSearchData(currSource, searchValue)
   }, [searchValue, stashData, archiveData])
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-30">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between lg:px-8 sticky top-0 z-30">
 
 
       <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-40 sm:w-64 lg:w-72 ml-10 lg:ml-0">
@@ -36,25 +41,25 @@ export default function Header() {
       </div>
 
 
-      <div className="flex items-center gap-2 lg:gap-3">
+      <div className="flex items-center gap-2">
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-medium px-3 lg:px-4 py-2 rounded-lg transition-colors cursor-pointer"
         >
           <Plus size={15} />
           <span className="hidden sm:inline">
-            {activeNav === 'home' ? 'Add DevStash' : 'Add Archive'}
+            {pathname === '/' ? 'Add DevStash' : 'Add Archive'}
           </span>
         </button>
 
 
 
-        <div className="flex items-center w-[10px]">
+        <div className={`flex items-center justify-center w-[65px] `}>
           {isLoaded ? (
             <>
               <Show when="signed-out">
                 <SignInButton mode="modal">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer">
+                  <button className=" w-[65px] bg-blue-600 hover:bg-blue-700 text-white px-2 py-2 rounded-lg transition-all duration-300 cursor-pointer">
                     Sign In
                   </button>
                 </SignInButton>
