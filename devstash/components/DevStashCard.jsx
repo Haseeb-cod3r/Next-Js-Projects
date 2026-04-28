@@ -6,7 +6,8 @@ import { AppContext } from '@/contexts/AppData'
 import { ModalContext } from '@/contexts/ModalData'
 import { StateContext } from '@/contexts/State'
 import { SearchContext } from '@/contexts/Search'
-
+import { useAuth } from '@clerk/nextjs'
+import toast from 'react-hot-toast'
 
 const stashMenu = ['Edit', 'Archive', 'Delete']
 const archiveMenu = ['Edit', 'Remove Archive', 'Delete']
@@ -18,7 +19,7 @@ export default function DevStashCard({ devStash }) {
   const { setIsModalOpen, setFormData, setTagValue, setIsEditMode } = useContext(ModalContext)
   const { sortData } = useContext(StateContext)
   const { searchValue } = useContext(SearchContext)
-
+  const { isSignedIn } = useAuth();
 
   function HighlightedText(text, highlight) {
     if (!highlight.trim()) {
@@ -84,6 +85,10 @@ export default function DevStashCard({ devStash }) {
       setStashData(sortData("date", newData))
     }
     if (action === "Archive") {
+      if (!isSignedIn) {
+        toast.error("Please Sign in to use Archive")
+        return
+      }
       const newArchiveData = stashData.filter((obj) => obj.id === devStash.id)
       const isArchived = archiveData.some(obj => obj.id === devStash.id)
       if (!isArchived) {
@@ -200,7 +205,7 @@ export default function DevStashCard({ devStash }) {
         ))}
       </div>
 
-      <div className="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-100 mt-auto">
+      <div className="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-100">
         <span className="flex items-center gap-1 flex-shrink-0">
           <Eye size={11} />
           {devStash.views}
