@@ -15,10 +15,10 @@ import { useAuth } from '@clerk/nextjs'
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const { stashData, archiveData, isLoaded } = useContext(AppContext)
+  const { stashData, archiveData, isLoaded,setStashData,setArchiveData } = useContext(AppContext)
   const { setSearchValue } = useContext(SearchContext)
   const { sortAccTags, tags, generateTags } = useContext(TagContext)
-  const { activeNav, setActiveNav, setSort } = useContext(StateContext)
+  const { activeNav, setActiveNav, setSort,sortData } = useContext(StateContext)
   const [checkedTags, setCheckedTags] = useState([])
   const [appliedTags, setAppliedTags] = useState([])
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -82,6 +82,7 @@ export default function Sidebar() {
             setCheckedTags([])
             setSearchValue('')
             setSort('Latest')
+            sortData('Latest', archiveData, setArchiveData)
             setMobileOpen(false)
           }}
         />
@@ -95,6 +96,7 @@ export default function Sidebar() {
             setCheckedTags([])
             setSearchValue('')
             setSort('Latest')
+            sortData('Latest', stashData, setStashData)
             setMobileOpen(false)
           }}
         />
