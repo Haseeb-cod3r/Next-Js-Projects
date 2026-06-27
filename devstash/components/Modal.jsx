@@ -191,7 +191,7 @@ export default function Modal({ setIsModalOpen }) {
 
         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
           <div>
-            <h2 className="text-base font-bold text-gray-900">Add DevStash</h2>
+            <h2 className="text-base font-bold text-gray-900">DevStash</h2>
             <p className="text-xs text-gray-400 mt-0.5">Save a new link to your collection</p>
           </div>
           <button

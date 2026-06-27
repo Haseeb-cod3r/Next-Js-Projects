@@ -149,6 +149,7 @@ export default function Sidebar() {
         onClick={() => setMobileOpen(true)}
       >
         <Menu size={18} className="text-gray-600" />
+        
       </button>
 
 

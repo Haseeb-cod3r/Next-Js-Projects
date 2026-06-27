@@ -14,7 +14,9 @@ export default function DevStash() {
   const [sortOpen, setSortOpen] = useState(false)
   const { stashData, archiveData, setArchiveData, setStashData } = useContext(AppContext)
   const { sortData, sort, setSort, activeNav } = useContext(StateContext)
-const pathname = usePathname()
+  const pathname = usePathname()
+
+  
   return (
     <div>
       <div className="flex items-center justify-between mb-6">

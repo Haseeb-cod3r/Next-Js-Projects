@@ -16,7 +16,7 @@ export default function Header() {
   const { stashData, archiveData } = useContext(AppContext)
   const { searchValue, setSearchValue, sortSearchData } = useContext(SearchContext)
   const { activeNav } = useContext(StateContext)
-  const { isLoaded,isSignedIn } = useAuth()
+  const { isLoaded } = useAuth()
   const pathname = usePathname()
 
 

@@ -9,8 +9,8 @@ import { SearchContext } from '@/contexts/Search'
 import { useAuth } from '@clerk/nextjs'
 import toast from 'react-hot-toast'
 
-const stashMenu = ['Edit', 'Archive', 'Delete']
-const archiveMenu = ['Edit', 'Remove Archive', 'Delete']
+const stashMenu = ['Visit', 'Edit', 'Archive', 'Delete']
+const archiveMenu = ['Visit', 'Edit', 'Remove Archive', 'Delete']
 
 
 export default function DevStashCard({ devStash }) {
@@ -43,6 +43,10 @@ export default function DevStashCard({ devStash }) {
   };
 
   function handleArchiveAction(action) {
+    if (action === "Visit") {
+      window.open(devStash.url, "_blank")
+      incrementViewsCount(false, archiveData, setArchiveData)
+    }
     if (action === "Delete") {
       const newData = archiveData.filter((obj) => obj.id !== devStash.id)
       setArchiveData(sortData("date", newData))
@@ -80,6 +84,10 @@ export default function DevStashCard({ devStash }) {
     }
   }
   function handleStashAction(action) {
+    if (action === "Visit") {
+      window.open(devStash.url, "_blank")
+      incrementViewsCount(false, stashData, setStashData)
+    }
     if (action === "Delete") {
       const newData = stashData.filter((obj) => obj.id !== devStash.id)
       setStashData(sortData("date", newData))
@@ -136,6 +144,35 @@ export default function DevStashCard({ devStash }) {
     setData(sorted)
   }
 
+  function incrementViewsCount(dirFromUrl, data, setData) {
+    if (dirFromUrl) {
+      if (devStash.isArchived) {
+        const updatedArchiveData = archiveData.map((item) => {
+          if (item.id === devStash.id) {
+            return { ...item, views: item.views + 1 }
+          }
+          return item
+        })
+        setArchiveData(updatedArchiveData)
+      } else {
+        const updatedStashData = stashData.map((item) => {
+          if (item.id === devStash.id) {
+            return { ...item, views: item.views + 1 }
+          }
+          return item
+        })
+        setStashData(updatedStashData)
+      }
+      return
+    }
+    const updatedData = data.map((item) => {
+      if (item.id === devStash.id) {
+        return { ...item, views: item.views + 1 }
+      }
+      return item
+    })
+    setData(updatedData)
+  }
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-shadow relative overflow-hidden">
@@ -156,9 +193,9 @@ export default function DevStashCard({ devStash }) {
             <p className="font-semibold text-sm text-gray-900 leading-tight truncate">
               {HighlightedText(devStash.title, searchValue)}
             </p>
-            <p title='url' className="text-xs text-gray-400 mt-0.5 truncate break-all">
+            <a href={devStash.url} onClick={() => incrementViewsCount(true)} target="_blank" title='url' className="text-xs text-gray-400 mt-0.5 truncate break-all">
               {devStash.url}
-            </p>
+            </a>
           </div>
         </div>
 
@@ -228,3 +265,5 @@ export default function DevStashCard({ devStash }) {
     </div>
   )
 }
+
+

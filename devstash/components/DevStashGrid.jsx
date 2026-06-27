@@ -15,7 +15,7 @@ export default function DevStashGrid() {
 
   const { stashData, archiveData, isLoaded } = useContext(AppContext)
   const { setIsModalOpen } = useContext(ModalContext)
-  const { searchData, setSearchValue, searchValue } = useContext(SearchContext)
+  const { searchData, setSearchValue, } = useContext(SearchContext)
   const { activeNav, setActiveNav } = useContext(StateContext)
   const { tagData } = useContext(TagContext)
 
@@ -108,13 +108,13 @@ export default function DevStashGrid() {
           Items you move to the Archive will appear here. It's a great way to keep your Stash secret and organized.
         </p>
 
-<Link href={"/"}>
-        <button
-          onClick={() => setActiveNav("home")}
-          className="mt-6 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
-        >
-          Back to Stash
-        </button>
+        <Link href={"/"}>
+          <button
+            onClick={() => setActiveNav("home")}
+            className="mt-6 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+          >
+            Back to Stash
+          </button>
         </Link>
       </div>
     );
