@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+
+@theme {
+  --font-sans: var(--font-inter);
+}
+
+
 ::-webkit-scrollbar {
   width: 4px;
 }

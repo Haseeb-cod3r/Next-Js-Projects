@@ -178,7 +178,6 @@ export default function AppData({ children }) {
 
   useEffect(() => {
     if (isLoaded) {
-      console.log("object");
       localStorage.setItem("archive", JSON.stringify(archiveData));
     }
   }, [archiveData, isLoaded]);

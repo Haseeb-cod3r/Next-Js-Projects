@@ -11,6 +11,7 @@ import { StateContext } from '@/contexts/State'
 import SkeletonTag from './SkeletonTag'
 import Link from 'next/link'
 import { useAuth } from '@clerk/nextjs'
+import { generateAnswer } from '@/service/GeminiService'
 
 
 export default function Sidebar() {
@@ -24,7 +25,13 @@ export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { isSignedIn } = useAuth();
 
-
+useEffect(()=>{
+async function print (){
+  const res = await generateAnswer()
+  console.log(res);
+}
+print()
+},[appliedTags])
   useEffect(() => {
     if (pathname === '/archive') setActiveNav('archived')
     else if (pathname === '/') setActiveNav('home')
