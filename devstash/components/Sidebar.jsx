@@ -27,7 +27,7 @@ export default function Sidebar() {
 
 useEffect(()=>{
 async function print (){
-  const res = await generateAnswer()
+  const res = await generateAnswer(stashData)
   console.log(res);
 }
 print()
