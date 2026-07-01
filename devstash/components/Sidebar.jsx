@@ -25,13 +25,9 @@ export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { isSignedIn } = useAuth();
 
-useEffect(()=>{
-async function print (){
-  const res = await generateAnswer(stashData)
-  console.log(res);
-}
-print()
-},[appliedTags])
+
+
+
   useEffect(() => {
     if (pathname === '/archive') setActiveNav('archived')
     else if (pathname === '/') setActiveNav('home')

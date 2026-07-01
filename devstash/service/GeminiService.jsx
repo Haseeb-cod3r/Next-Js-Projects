@@ -7,7 +7,6 @@ const ai = new GoogleGenAI({ apiKey })
 
 const devStashTools = {
   functionDeclarations: [
-    // 1. CREATE
     {
       name: "createCard",
       description: "Use when user wants to add or save a new website bookmark card",
@@ -23,7 +22,6 @@ const devStashTools = {
       }
     },
 
-    // 2. DELETE
     {
       name: "deleteCard",
       description: "Use when user wants to delete or remove an existing card. Match the card from the user's cards list.",
@@ -36,7 +34,7 @@ const devStashTools = {
       }
     },
 
-    // 3. EDIT
+    
     {
       name: "editCard",
       description: "Use when user wants to update or change an existing card. Match the card from the user's cards list.",
@@ -53,7 +51,7 @@ const devStashTools = {
       }
     },
 
-    // 4. OPEN
+    
     {
       name: "openWebsite",
       description: "Use when user wants to open or visit a website from their cards",
@@ -68,10 +66,10 @@ const devStashTools = {
   ]
 }
 
-export const generateAnswer = async (data) => {
+export const generateAnswer = async (data,prompt) => {
   const context = `
   User's saved cards: ${JSON.stringify(data)}
-  User request: edit the title of flexbox froggy card to haseeb and delete ract documentatin card
+  User request: ${prompt}
 `
   try {
     const res = await ai.models.generateContent({
