@@ -9,7 +9,7 @@ export default function AppData({ children }) {
   const [isLoaded, setIsLoaded] = useState(false)
 
   const staData = [{
-    id: 1,
+    id: "1",
     title: "Scrimba",
     url: "https://scrimba.com/",
     description: "Scrimba is a coding platform that allows you to have interactive conversations with the code. Learn front-end development through interactive screencasts.",
@@ -21,7 +21,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 2,
+    id: "2",
     title: "The Odin Project",
     url: "https://www.theodinproject.com/",
     description: "The Odin Project provides a free open source coding curriculum that can be taken entirely online. Learn HTML, CSS, JavaScript, and more with hands-on projects.",
@@ -33,7 +33,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 3,
+    id: "3",
     title: "Dribbble",
     url: "https://dribbble.com/",
     description: "Discover the world's top designers and creatives. Dribbble is the leading destination to find and showcase creative work.",
@@ -45,7 +45,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 4,
+    id: "4",
     title: "Dev.to",
     url: "https://dev.to/",
     description: "A constructive and inclusive social network for software developers. Write articles, find jobs, and discuss the coding world with other developers.",
@@ -57,7 +57,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 5,
+    id: "5",
     title: "React Documentation",
     url: "https://react.dev/",
     description: "The library for web and native user interfaces. Learn React from the official documentation with interactive examples and detailed API references.",
@@ -69,7 +69,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 6,
+    id: "6",
     title: "Flexbox Froggy",
     url: "https://flexboxfroggy.com/",
     description: "A game where you help Froggy and friends by writing CSS code to move them to their lily pads. Learn CSS Flexbox in a fun and interactive way.",
@@ -81,7 +81,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 7,
+    id: "7",
     title: "CSS Grid Garden",
     url: "https://cssgridgarden.com/",
     description: "A game for learning CSS Grid layout. Write CSS code to grow your carrot garden using the power of CSS grid.",
@@ -93,7 +93,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 8,
+    id: "8",
     title: "web.dev",
     url: "https://web.dev/",
     description: "Guidance and analysis from Google to help developers build excellent web experiences. Explore resources on performance, accessibility, and modern web APIs.",
@@ -105,7 +105,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 9,
+    id: "9",
     title: "Lighthouse",
     url: "https://developer.chrome.com/docs/lighthouse/",
     description: "An open-source, automated tool for improving the quality of web pages. You can run it against any web page, public or requiring authentication.",
@@ -117,7 +117,7 @@ export default function AppData({ children }) {
     isLatest: false
   },
   {
-    id: 10,
+    id: "10",
     title: "Git Documentation",
     url: "https://git-scm.com/doc",
     description: "Official documentation for Git — the free and open source distributed version control system designed to handle everything from small to very large projects.",
@@ -183,8 +183,39 @@ export default function AppData({ children }) {
   }, [archiveData, isLoaded]);
 
 
+ function incrementViewsCount(dirFromUrl, devStash , data, setData) {
+    if (dirFromUrl) {
+      if (devStash.isArchived) {
+        const updatedArchiveData = archiveData.map((item) => {
+          if (item.id === devStash.id) {
+            return { ...item, views: item.views + 1 }
+          }
+          return item
+        })
+        setArchiveData(updatedArchiveData)
+      } else {
+        const updatedStashData = stashData.map((item) => {
+          if (item.id === devStash.id) {
+            return { ...item, views: item.views + 1 }
+          }
+          return item
+        })
+        setStashData(updatedStashData)
+      }
+      return
+    }
+    const updatedData = data.map((item) => {
+      console.log(item.id,devStash.id);
+      if (item.id === devStash.id) {
+        return { ...item, views: item.views + 1 }
+      }
+      return item
+    })
+    setData(updatedData)
+  }
+
   return (
-    <AppContext.Provider value={{ stashData, setStashData, archiveData, setArchiveData,isLoaded }}>
+    <AppContext.Provider value={{ stashData, setStashData, archiveData, setArchiveData, isLoaded,incrementViewsCount }}>
       {children}
     </AppContext.Provider>
   )

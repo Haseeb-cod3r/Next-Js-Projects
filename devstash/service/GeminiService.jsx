@@ -28,7 +28,8 @@ const devStashTools = {
       parameters: {
         type: "OBJECT",
         properties: {
-          id: { type: "STRING", description: "The id of the card to delete, matched from the user's cards list" }
+          id: { type: "STRING", description: "The id of the card to delete, matched from the user's cards list" },
+           isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to delete stash or archived" },
         },
         required: ["id"]
       }
@@ -58,7 +59,9 @@ const devStashTools = {
       parameters: {
         type: "OBJECT",
         properties: {
-          url: { type: "STRING", description: "The URL of the website to open, matched from the user's cards list" }
+          url: { type: "STRING", description: "The URL of the website to open, matched from the user's cards list" },
+          id: { type: "STRING", description: "The id of the card to increment the views of the card" },
+          isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to change stash or archived" },
         },
         required: ["url"]
       }
@@ -93,8 +96,8 @@ Rules:
 - Do not ask the user for any information, figure it out yourself
 - For createCard, generate the url, title, description and tags yourself based on your knowledge of the website
 - For editCard, find the card from user's cards list by matching the website name, then only change what the user asked to change, keep everything else the same from the original card and return the url, title, description, tags
-- For deleteCard, find the card from user's cards list by matching the website name and return its id
-- For openWebsite, find the card from user's cards list by matching the website name and return its url
+- For deleteCard, find the card from user's cards list by matching the website name and return its id and isArchived
+- For openWebsite, find the card from user's cards list by matching the website name and return its url, id and iaArchived
 - If user asks to edit or open a card that does not exist in their cards list, do NOT call any function, just reply naturally that the card was not found
 
 Actions:

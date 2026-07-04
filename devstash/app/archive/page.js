@@ -2,6 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { Toaster } from "react-hot-toast";
 import DevStash from "@/components/DevStash";
+import Chat from "@/components/Chat";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <Header />
         <main className="flex-1 overflow-y-auto p-8 bg-gray-50">
           <DevStash />
+          <Chat/>
         </main>
       </div>
     </div>

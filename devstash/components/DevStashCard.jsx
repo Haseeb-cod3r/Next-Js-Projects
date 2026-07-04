@@ -15,7 +15,7 @@ const archiveMenu = ['Visit', 'Edit', 'Remove Archive', 'Delete']
 
 export default function DevStashCard({ devStash }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { stashData, setStashData, archiveData, setArchiveData } = useContext(AppContext)
+  const { stashData, setStashData, archiveData, setArchiveData, incrementViewsCount } = useContext(AppContext)
   const { setIsModalOpen, setFormData, setTagValue, setIsEditMode } = useContext(ModalContext)
   const { sortData } = useContext(StateContext)
   const { searchValue } = useContext(SearchContext)
@@ -45,7 +45,7 @@ export default function DevStashCard({ devStash }) {
   function handleArchiveAction(action) {
     if (action === "Visit") {
       window.open(devStash.url, "_blank")
-      incrementViewsCount(false, archiveData, setArchiveData)
+      incrementViewsCount(false, devStash, archiveData, setArchiveData,)
     }
     if (action === "Delete") {
       const newData = archiveData.filter((obj) => obj.id !== devStash.id)
@@ -86,7 +86,7 @@ export default function DevStashCard({ devStash }) {
   function handleStashAction(action) {
     if (action === "Visit") {
       window.open(devStash.url, "_blank")
-      incrementViewsCount(false, stashData, setStashData)
+      incrementViewsCount(false, devStash, stashData, setStashData)
     }
     if (action === "Delete") {
       const newData = stashData.filter((obj) => obj.id !== devStash.id)
@@ -144,35 +144,35 @@ export default function DevStashCard({ devStash }) {
     setData(sorted)
   }
 
-  function incrementViewsCount(dirFromUrl, data, setData) {
-    if (dirFromUrl) {
-      if (devStash.isArchived) {
-        const updatedArchiveData = archiveData.map((item) => {
-          if (item.id === devStash.id) {
-            return { ...item, views: item.views + 1 }
-          }
-          return item
-        })
-        setArchiveData(updatedArchiveData)
-      } else {
-        const updatedStashData = stashData.map((item) => {
-          if (item.id === devStash.id) {
-            return { ...item, views: item.views + 1 }
-          }
-          return item
-        })
-        setStashData(updatedStashData)
-      }
-      return
-    }
-    const updatedData = data.map((item) => {
-      if (item.id === devStash.id) {
-        return { ...item, views: item.views + 1 }
-      }
-      return item
-    })
-    setData(updatedData)
-  }
+  // function incrementViewsCount(dirFromUrl, data, setData) {
+  //   if (dirFromUrl) {
+  //     if (devStash.isArchived) {
+  //       const updatedArchiveData = archiveData.map((item) => {
+  //         if (item.id === devStash.id) {
+  //           return { ...item, views: item.views + 1 }
+  //         }
+  //         return item
+  //       })
+  //       setArchiveData(updatedArchiveData)
+  //     } else {
+  //       const updatedStashData = stashData.map((item) => {
+  //         if (item.id === devStash.id) {
+  //           return { ...item, views: item.views + 1 }
+  //         }
+  //         return item
+  //       })
+  //       setStashData(updatedStashData)
+  //     }
+  //     return
+  //   }
+  //   const updatedData = data.map((item) => {
+  //     if (item.id === devStash.id) {
+  //       return { ...item, views: item.views + 1 }
+  //     }
+  //     return item
+  //   })
+  //   setData(updatedData)
+  // }
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-shadow relative overflow-hidden">
@@ -193,7 +193,7 @@ export default function DevStashCard({ devStash }) {
             <p className="font-semibold text-sm text-gray-900 leading-tight truncate">
               {HighlightedText(devStash.title, searchValue)}
             </p>
-            <a href={devStash.url} onClick={() => incrementViewsCount(true)} target="_blank" title='url' className="text-xs text-gray-400 mt-0.5 truncate break-all">
+            <a href={devStash.url} onClick={() => incrementViewsCount(true,devStash)} target="_blank" title='url' className="text-xs text-gray-400 mt-0.5 truncate break-all">
               {devStash.url}
             </a>
           </div>
@@ -202,27 +202,29 @@ export default function DevStashCard({ devStash }) {
         <div className="relative flex-shrink-0">
           <button
             onClick={() => setMenuOpen(p => !p)}
-            className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-md cursor-pointer text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
           >
             <MoreHorizontal size={16} />
           </button>
 
           {menuOpen && (
-            <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-32 overflow-hidden">
-              {(devStash.isArchived ? archiveMenu : stashMenu).map(action => (
-                <button
-                  key={action}
-                  onClick={() => {
-                    setMenuOpen(false)
-                    devStash.isArchived ? handleArchiveAction(action) : handleStashAction(action)
-                  }}
-                  className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
+            
+              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-32 overflow-hidden">
+                {(devStash.isArchived ? archiveMenu : stashMenu).map(action => (
+                  <button
+                    key={action}
+                    onClick={() => {
+                      setMenuOpen(false)
+                      devStash.isArchived ? handleArchiveAction(action) : handleStashAction(action)
+                    }}
+                    className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                     ${action === 'Delete' ? 'text-red-500' : 'text-gray-700'}`}
-                >
-                  {action}
-                </button>
-              ))}
-            </div>
+                  >
+                    {action}
+                  </button>
+                ))}
+              </div>
+             
           )}
         </div>
       </div>
