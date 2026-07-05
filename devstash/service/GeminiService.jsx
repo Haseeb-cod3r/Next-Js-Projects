@@ -29,13 +29,35 @@ const devStashTools = {
         type: "OBJECT",
         properties: {
           id: { type: "STRING", description: "The id of the card to delete, matched from the user's cards list" },
-           isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to delete stash or archived" },
+          isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to delete stash or archived" },
+        },
+        required: ["id"]
+      }
+    },
+    {
+      name: "archiveCard",
+      description: "Use when user wants to archive card from an existing card. Match the card from the user's cards list.",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          id: { type: "STRING", description: "The id of the card to we wanna archive, matched from the user's cards list" },
+        },
+        required: ["id"]
+      }
+    },
+    {
+      name: "removeArchive",
+      description: "Use when user wants to remove card from archived card. Match the card from the user's cards list.",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          id: { type: "STRING", description: "The id of the card to we wanna archive, matched from the user's cards list" },
         },
         required: ["id"]
       }
     },
 
-    
+
     {
       name: "editCard",
       description: "Use when user wants to update or change an existing card. Match the card from the user's cards list.",
@@ -46,13 +68,15 @@ const devStashTools = {
           url: { type: "STRING", description: "Updated URL, return original if not changed" },
           title: { type: "STRING", description: "Updated title, return original if not changed" },
           description: { type: "STRING", description: "Updated description, return original if not changed" },
-          tags: { type: "ARRAY", items: { type: "STRING" }, description: "Updated tags, return original if not changed" }
+          tags: { type: "ARRAY", items: { type: "STRING" }, description: "Updated tags, return original if not changed" },
+          isArchived:{ type: "BOOLEAN",  description: "The isArchive property from the user's card list to know which data to edit stash or archived" }
+
         },
-        required: ["id", "url", "title", "description", "tags"]
+        required: ["id", "url", "title", "description", "tags", "isArchived"]
       }
     },
 
-    
+
     {
       name: "openWebsite",
       description: "Use when user wants to open or visit a website from their cards",
@@ -69,7 +93,7 @@ const devStashTools = {
   ]
 }
 
-export const generateAnswer = async (data,prompt) => {
+export const generateAnswer = async (data, prompt) => {
   const context = `
   User's saved cards: ${JSON.stringify(data)}
   User request: ${prompt}
@@ -77,7 +101,7 @@ export const generateAnswer = async (data,prompt) => {
   try {
     const res = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents:context ,
+      contents: context,
       config: {
         systemInstruction: `
 You are an action executor for DevStash, a personal websites manager app.
@@ -95,8 +119,10 @@ Rules:
 - Keep replies very short, 1 sentence max
 - Do not ask the user for any information, figure it out yourself
 - For createCard, generate the url, title, description and tags yourself based on your knowledge of the website
-- For editCard, find the card from user's cards list by matching the website name, then only change what the user asked to change, keep everything else the same from the original card and return the url, title, description, tags
+- For editCard, find the card from user's cards list by matching the website name, then only change what the user asked to change, keep everything else the same from the original card and return the url, title, description, tags, id, isArchived
 - For deleteCard, find the card from user's cards list by matching the website name and return its id and isArchived
+- For archiveCard, find the card from user's cards list by matching the website name and return its id
+- For removeArchive, find the card from user's cards list by matching the website name and return its id
 - For openWebsite, find the card from user's cards list by matching the website name and return its url, id and iaArchived
 - If user asks to edit or open a card that does not exist in their cards list, do NOT call any function, just reply naturally that the card was not found
 
@@ -105,6 +131,8 @@ Actions:
 - deleteCard  — user wants to remove/delete a card  
 - editCard    — user wants to update/change/edit a card
 - openWebsite — user wants to open/visit/launch a website
+- archiveCard — user wants to add a card to archive
+- removeArchive — user wants to remove a card from archive
 
 `,
         temperature: 0.0,

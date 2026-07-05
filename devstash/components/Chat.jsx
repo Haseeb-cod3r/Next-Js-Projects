@@ -21,19 +21,29 @@ export default function Chat() {
   async function send(data, prompt) {
     const res = await generateAnswer(data, prompt)
     console.log(res);
-    console.log(res.functionCalls[0].args);
-    console.log(res.text);
-    if (res.functionCalls[0].name === "createCard") {
-      addDataThroughAi(res.functionCalls[0].args)
+    if (!(res.functionCalls)) return
+
+    console.log(res.functionCalls[0]?.args);
+    console.log(res?.text);
+
+
+    if (res.functionCalls[0]?.name === "createCard") {
+      addDataThroughAi(res.functionCalls[0]?.args)
     }
-    if (res.functionCalls[0].name === "editCard") {
-      handleStashAction(res.functionCalls[0].args, "Edit")
+    if (res.functionCalls[0]?.name === "editCard") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "Edit")
     }
-    if (res.functionCalls[0].name === "openWebsite") {
-      handleStashAction(res.functionCalls[0].args, "Visit")
+    if (res.functionCalls[0]?.name === "openWebsite") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "Visit")
     }
-    if (res.functionCalls[0].name === "deleteCard") {
-      handleStashAction(res.functionCalls[0].args, "Delete")
+    if (res.functionCalls[0]?.name === "deleteCard") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "Delete")
+    }
+    if (res.functionCalls[0]?.name === "archiveCard") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "Archive")
+    }
+    if (res.functionCalls[0]?.name === "removeArchive") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "RemoveArchive")
     }
 
   }
@@ -46,12 +56,12 @@ export default function Chat() {
 
   function addDataThroughAi(data) {
     const newData = [{
-      ...data, id: crypto.randomUUID(), created: Date.now(), isArchived: false, views: 0, isLatest: false, isPinned: false
+      ...data, id: crypto.randomUUID(), created: Date.now(), isArchived: false, views: 0, isPinned: false
     }, ...stashData,]
     setStashData(sortData("date", newData))
   }
 
-  function handleStashAction(data, action) {
+  function handleActionThroughAi(data, action) {
     if (action === "Visit") {
       window.open(data.url, "_blank")
       if (data.isArchived) {
@@ -72,42 +82,75 @@ export default function Chat() {
         setStashData(sortData("date", newData))
       }
     }
-    // if (action === "Archive") {
-    //   if (!isSignedIn) {
-    //     toast.error("Please Sign in to use Archive")
-    //     return
-    //   }
-    //   const newArchiveData = stashData.filter((obj) => obj.id === devStash.id)
-    //   const isArchived = archiveData.some(obj => obj.id === devStash.id)
-    //   if (!isArchived) {
-    //     const newData = stashData.filter((obj) => obj.id !== devStash.id)
-    //     setStashData(sortData("date", newData))
-    //     setArchiveData(sortData("date", [...archiveData, {
-    //       ...newArchiveData[0], isArchived: true,
-    //       isPinned: false,
-    //       isLatest: false
-    //     }]))
-    //   }
-    // }
-    // if (action === "Edit") {
-    //   const dataForForm = stashData.filter((obj) => obj.id === devStash.id)
-    //   setFormData({
-    //     id: dataForForm[0].id,
-    //     title: dataForForm[0].title,
-    //     url: dataForForm[0].url,
-    //     description:
-    //       dataForForm[0].description,
-    //     tags: dataForForm[0].tags,
-    //     views: 0,
-    //     created: dataForForm[0].created,
-    //     isArchived: false,
-    //     isPinned: dataForForm[0].isPinned,
-    //     pinnedAt: dataForForm[0].pinnedAt
-    //   })
-    //   setTagValue(dataForForm[0].tags.join(", "))
-    //   setIsEditMode({ edit: true, isArchiveEdit: false })
-    //   setIsModalOpen(true)
-    // }
+    if (action === "Archive") {
+      if (!isSignedIn) {
+        toast.error("Please Sign in to use Archive")
+        return
+      }
+      const newArchiveData = stashData.filter((obj) => obj.id === data.id)
+      const isArchived = archiveData.some(obj => obj.id === data.id)
+      if (!isArchived) {
+        const newData = stashData.filter((obj) => obj.id !== data.id)
+        setStashData(sortData("date", newData))
+        setArchiveData(sortData("date", [...archiveData, {
+          ...newArchiveData[0], isArchived: true,
+          isPinned: false,
+        }]))
+      }
+    }
+    if (action === "RemoveArchive") {
+      const newData = archiveData.filter((obj) => obj.id === data.id)
+      const newArchiveData = archiveData.filter((obj) => obj.id !== data.id)
+
+      setArchiveData(sortData("date", newArchiveData))
+      setStashData(sortData("date", [{
+        ...newData[0], isArchived: false,
+        isPinned: false,
+      }, ...stashData]))
+
+    }
+    if (action === "Edit") {
+      if (data.isArchived) {
+        const newEditedData = archiveData.map((obj) => {
+          if (obj.id === data.id) {
+            const newObj = {
+              ...obj,
+              title: data.title,
+              url: data.url,
+              description: data.description,
+              tags: data.tags,
+            }
+            return newObj
+          }
+          return obj
+        })
+        setArchiveData(sortData("date", newEditedData))
+      } else {
+        const newEditedData = stashData.map((obj) => {
+          if (obj.id === data.id) {
+            const newObj = {
+              ...obj,
+              title: data.title,
+              url: data.url,
+              description: data.description,
+              tags: data.tags,
+            }
+            return newObj
+          }
+          return obj
+        })
+        setStashData(sortData("date", newEditedData))
+      }
+
+    }
+
+
+
+
+
+
+
+    
   }
 
 

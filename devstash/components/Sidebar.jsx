@@ -148,7 +148,7 @@ export default function Sidebar() {
 
 
       <button
-        className="lg:hidden fixed top-4 left-4 z-40 p-2 bg-white border border-gray-200 rounded-lg shadow-sm"
+        className="lg:hidden fixed top-3 left-4 z-40 p-2 bg-white border border-gray-200 rounded-lg shadow-sm"
         onClick={() => setMobileOpen(true)}
       >
         <Menu size={18} className="text-gray-600" />

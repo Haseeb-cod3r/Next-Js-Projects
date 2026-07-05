@@ -26,10 +26,10 @@ export default function Header() {
   }, [searchValue, stashData, archiveData])
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between lg:px-8 sticky top-0 z-30">
+    <header className="h-15 bg-white border-b border-gray-200 flex gap-2 items-center justify-between lg:px-8 sticky top-0 z-30">
 
 
-      <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-40 sm:w-64 lg:w-72 ml-10 lg:ml-0">
+      <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 w-40 sm:w-64 lg:w-72 ml-16 lg:ml-0">
         <Search size={15} className="text-gray-400 flex-shrink-0" />
         <input
           type="text"
@@ -46,7 +46,7 @@ export default function Header() {
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-1.5 bg-gray-900 hover:bg-gray-700 text-white text-sm font-medium px-3 lg:px-4 py-2 rounded-lg transition-colors cursor-pointer"
         >
-          <Plus size={15} />
+          <Plus size={18} />
           <span className="hidden sm:inline">
             {pathname === '/' ? 'Add DevStash' : 'Add Archive'}
           </span>

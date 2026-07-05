@@ -18,7 +18,7 @@ export default function AppData({ children }) {
     created: "11 Nov 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "2",
@@ -30,7 +30,7 @@ export default function AppData({ children }) {
     created: "28 Oct 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "3",
@@ -42,7 +42,7 @@ export default function AppData({ children }) {
     created: "14 Oct 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "4",
@@ -54,7 +54,7 @@ export default function AppData({ children }) {
     created: "30 Sep 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "5",
@@ -66,7 +66,7 @@ export default function AppData({ children }) {
     created: "17 Sep 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "6",
@@ -78,7 +78,7 @@ export default function AppData({ children }) {
     created: "02 Sep 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "7",
@@ -90,7 +90,7 @@ export default function AppData({ children }) {
     created: "19 Aug 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "8",
@@ -102,7 +102,7 @@ export default function AppData({ children }) {
     created: "05 Aug 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "9",
@@ -114,7 +114,7 @@ export default function AppData({ children }) {
     created: "28 Jul 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   },
   {
     id: "10",
@@ -126,7 +126,7 @@ export default function AppData({ children }) {
     created: "10 Jul 2024",
     isArchived: false,
     isPinned: false,
-    isLatest: false
+    
   }
   ]
 
