@@ -31,7 +31,7 @@ const devStashTools = {
           id: { type: "STRING", description: "The id of the card to delete, matched from the user's cards list" },
           isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to delete stash or archived" },
         },
-        required: ["id"]
+        required: ["id", "isArchived"]
       }
     },
     {
@@ -69,7 +69,7 @@ const devStashTools = {
           title: { type: "STRING", description: "Updated title, return original if not changed" },
           description: { type: "STRING", description: "Updated description, return original if not changed" },
           tags: { type: "ARRAY", items: { type: "STRING" }, description: "Updated tags, return original if not changed" },
-          isArchived:{ type: "BOOLEAN",  description: "The isArchive property from the user's card list to know which data to edit stash or archived" }
+          isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to edit stash or archived" }
 
         },
         required: ["id", "url", "title", "description", "tags", "isArchived"]
@@ -87,9 +87,54 @@ const devStashTools = {
           id: { type: "STRING", description: "The id of the card to increment the views of the card" },
           isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to change stash or archived" },
         },
-        required: ["url"]
+        required: ["url", "id", "isArchived"]
       }
-    }
+    },
+    {
+      name: "handlePinCard",
+      description: "Use when user wants to pinned or unpinned any card",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          id: { type: "STRING", description: "The id of the card to pin that card" },
+          isArchived: { type: "BOOLEAN", description: "The isArchive property from the user's card list to know which data to pinned or unpinned, stash or archived" },
+        },
+        required: ["id", "isArchived"]
+      }
+    },
+    {
+      name: "sortData",
+      description: "Use when user wants to sort data there are 4 ways user can sort Latest, Oldest, Most viewed, Least viewed",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          sortAction: { type: "STRING", description: "The sort action name user want to sort data with like Oldest, Latest, Most viewed, Least viewed" },
+        },
+        required: ["sortAction"]
+      }
+    },
+    // {
+    //   name: "filterData",
+    //   description: "Use this when user wants to filter cards by applying different tags or user ask to apply different tags or user ask to show specific tag data",
+    //   parameters: {
+    //     type: "OBJECT",
+    //     properties: {
+    //       tags: { type: "ARRAY", item: { type: "STRING" }, description: "The array of tags that user ask to apply or to filter data with" },
+    //     },
+    //     required: ["tags"]
+    //   }
+    // },
+    {
+      name: "searchCard",
+      description: "Use this when user wants to search for card or when user ask to search for any card",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          searchValue: { type: "STRING", description: "The search value that user provide to search the card" },
+        },
+        required: ["searchValue"]
+      }
+    },
   ]
 }
 
@@ -124,6 +169,9 @@ Rules:
 - For archiveCard, find the card from user's cards list by matching the website name and return its id
 - For removeArchive, find the card from user's cards list by matching the website name and return its id
 - For openWebsite, find the card from user's cards list by matching the website name and return its url, id and iaArchived
+- For sortData return the name of the sort action user want to sort data with there are only 4 action (Latest, Oldest, Most viewed, Least viewed) if user ask for any other option reply naturally that you cant sort data according to that action
+- For handlePinCard if user ask to pin any card return that card id and isArchived property of that card
+- For searchCard if user ask to search any card return the value user provide to search the card
 - If user asks to edit or open a card that does not exist in their cards list, do NOT call any function, just reply naturally that the card was not found
 
 Actions:
@@ -133,6 +181,9 @@ Actions:
 - openWebsite — user wants to open/visit/launch a website
 - archiveCard — user wants to add a card to archive
 - removeArchive — user wants to remove a card from archive
+- sortData — user wants to sort data like (Latest, Oldest, Most viewed, Least Viewed)
+- handlePinCard — user wants to pin, mark, card
+- searchCard — user wants to search card
 
 `,
         temperature: 0.0,

@@ -6,13 +6,14 @@ import { AppContext } from '@/contexts/AppData'
 import { generateAnswer } from '@/service/GeminiService'
 import { StateContext } from '@/contexts/State'
 import { useAuth } from '@clerk/nextjs'
+import { SearchContext } from '@/contexts/Search'
 
 export default function Chat() {
   const { stashData, archiveData, setStashData, setArchiveData, incrementViewsCount } = useContext(AppContext)
-  const { sortData } = useContext(StateContext)
+  const { sortData, setSort, activeNav } = useContext(StateContext)
   const { isSignedIn } = useAuth();
 
-
+  const { setSearchValue } = useContext(SearchContext)
   const [chatModel, setChatModel] = useState(true)
   const [chatValue, setChatValue] = useState('')
 
@@ -45,6 +46,16 @@ export default function Chat() {
     if (res.functionCalls[0]?.name === "removeArchive") {
       handleActionThroughAi(res.functionCalls[0]?.args, "RemoveArchive")
     }
+    if (res.functionCalls[0]?.name === "sortData") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "sortData")
+    }
+    // if (res.functionCalls[0]?.name === "handlePinCard") {
+    //   handleActionThroughAi(res.functionCalls[0]?.args, "pinned")
+    // }
+    if (res.functionCalls[0]?.name === "searchCard") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "search")
+    }
+
 
   }
 
@@ -74,6 +85,10 @@ export default function Chat() {
     }
     if (action === "Delete") {
       if (data.isArchived) {
+        if (!isSignedIn) {
+          toast.error("Please Sign in to use Archive")
+          return
+        }
         const newData = archiveData.filter((obj) => obj.id !== data.id)
         setArchiveData(sortData("date", newData))
       }
@@ -99,6 +114,10 @@ export default function Chat() {
       }
     }
     if (action === "RemoveArchive") {
+      if (!isSignedIn) {
+        toast.error("Please Sign in to use Archive")
+        return
+      }
       const newData = archiveData.filter((obj) => obj.id === data.id)
       const newArchiveData = archiveData.filter((obj) => obj.id !== data.id)
 
@@ -111,6 +130,10 @@ export default function Chat() {
     }
     if (action === "Edit") {
       if (data.isArchived) {
+        if (!isSignedIn) {
+          toast.error("Please Sign in to use Archive")
+          return
+        }
         const newEditedData = archiveData.map((obj) => {
           if (obj.id === data.id) {
             const newObj = {
@@ -143,14 +166,55 @@ export default function Chat() {
       }
 
     }
+    if (action === "sortData") {
+      const action = data.sortAction.charAt(0).toUpperCase() + data.sortAction.slice(1).toLowerCase()
+      console.log(action);
+      setSort(action)
+      activeNav === 'home'
+        ? sortData(action, stashData, setStashData)
+        : sortData(action, archiveData, setArchiveData)
+
+    }
+
+    if (action === "pinned") {
+      if (data.isArchived) {
+        if (!isSignedIn) {
+          toast.error("Please Sign in to use Archive")
+          return
+        }
+        const pinnedData = archiveData.map((item) => (
+          item.id === data.id ? { ...item, isPinned: !item.isPinned, pinnedAt: !item.isPinned ? Date.now() : null } : item
+        ))
+
+        const sortedPinnedData = [...pinnedData.filter((item) => item.isPinned).sort((a, b) => b.pinnedAt - a.pinnedAt)]
+        const sortedNormalData = [...pinnedData.filter((item) => !item.isPinned).sort((a, b) => new Date(b.created) - new Date(a.created))]
+        const sorted = [
+          ...sortedPinnedData,
+          ...sortedNormalData
+        ]
+        setArchiveData(sorted)
+      } else {
+
+        const pinnedData = stashData.map((item) => (
+          item.id === data.id ? { ...item, isPinned: !item.isPinned, pinnedAt: !item.isPinned ? Date.now() : null } : item
+        ))
+
+        const sortedPinnedData = [...pinnedData.filter((item) => item.isPinned).sort((a, b) => b.pinnedAt - a.pinnedAt)]
+        const sortedNormalData = [...pinnedData.filter((item) => !item.isPinned).sort((a, b) => new Date(b.created) - new Date(a.created))]
+        const sorted = [
+          ...sortedPinnedData,
+          ...sortedNormalData
+        ]
+        setStashData(sorted)
+      }
+    }
+    if (action === "search") {
+      setSearchValue(data.searchValue)
+    }
 
 
 
 
-
-
-
-    
   }
 
 
