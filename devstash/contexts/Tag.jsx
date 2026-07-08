@@ -4,11 +4,13 @@ import React, { createContext, useState } from 'react'
 
 export const TagContext = createContext({})
 export default function Tag({ children }) {
-
+  const [checkedTags, setCheckedTags] = useState([])
+  const [appliedTags, setAppliedTags] = useState([])
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [tags, setTags] = useState([])
   const [tagData, setTagData] = useState({ isTagData: false, data: [] })
 
-  function generateTags(data,setAppliedTags,setCheckTags) {
+  function generateTags(data, setAppliedTags, setCheckTags) {
     const tagCounts = {};
     data.forEach((item) => {
       item.tags.forEach((tag) => {
@@ -45,7 +47,6 @@ export default function Tag({ children }) {
         })
         return isTrue
       })
-      console.log(filterData);
       setTagData({ isTagData: true, data: filterData })
     }
   }
@@ -53,7 +54,7 @@ export default function Tag({ children }) {
 
 
   return (
-    <TagContext.Provider value={{ tags, setTags, tagData, setTagData, generateTags, sortAccTags }}>
+    <TagContext.Provider value={{ tags, setTags, tagData, setTagData, generateTags, sortAccTags, checkedTags, setCheckedTags, appliedTags, setAppliedTags,mobileOpen, setMobileOpen }}>
       {children}
     </TagContext.Provider>
   )

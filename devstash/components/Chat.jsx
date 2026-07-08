@@ -1,23 +1,31 @@
 'use client'
 
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MessageSquareText, X, Send } from "lucide-react"
 import { AppContext } from '@/contexts/AppData'
 import { generateAnswer } from '@/service/GeminiService'
 import { StateContext } from '@/contexts/State'
 import { useAuth } from '@clerk/nextjs'
 import { SearchContext } from '@/contexts/Search'
+import { TagContext } from '@/contexts/Tag'
+import { useRouter } from 'next/navigation'
 
 export default function Chat() {
   const { stashData, archiveData, setStashData, setArchiveData, incrementViewsCount } = useContext(AppContext)
   const { sortData, setSort, activeNav } = useContext(StateContext)
   const { isSignedIn } = useAuth();
-
+  const { appliedTags, setAppliedTags, checkedTags, setCheckedTags, setMobileOpen } = useContext(TagContext)
   const { setSearchValue } = useContext(SearchContext)
   const [chatModel, setChatModel] = useState(true)
   const [chatValue, setChatValue] = useState('')
+  const router = useRouter()
 
 
+
+
+  useEffect(() => {
+    console.log(checkedTags);
+  }, [checkedTags])
 
   async function send(data, prompt) {
     const res = await generateAnswer(data, prompt)
@@ -49,11 +57,17 @@ export default function Chat() {
     if (res.functionCalls[0]?.name === "sortData") {
       handleActionThroughAi(res.functionCalls[0]?.args, "sortData")
     }
-    // if (res.functionCalls[0]?.name === "handlePinCard") {
-    //   handleActionThroughAi(res.functionCalls[0]?.args, "pinned")
-    // }
+    if (res.functionCalls[0]?.name === "handlePinCard") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "pinned")
+    }
     if (res.functionCalls[0]?.name === "searchCard") {
       handleActionThroughAi(res.functionCalls[0]?.args, "search")
+    }
+    if (res.functionCalls[0]?.name === "filterData") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "filter")
+    }
+    if (res.functionCalls[0]?.name === "changeRoute") {
+      handleActionThroughAi(res.functionCalls[0]?.args, "changeRoute")
     }
 
 
@@ -211,6 +225,60 @@ export default function Chat() {
     if (action === "search") {
       setSearchValue(data.searchValue)
     }
+    if (action === "filter") {
+
+      if (data.isApply) {
+
+        data.tags.forEach(tag => {
+          setCheckedTags(prev =>
+            prev.some(t => t.toLowerCase() === tag.toLowerCase()) ? prev : [...prev, tag]
+          )
+
+          const isPresent = appliedTags.some(t => t.toLowerCase() === tag.toLowerCase())
+          if (!isPresent) { setAppliedTags((prev) => [...prev, tag]) }
+
+
+        });
+      } else {
+
+
+        data.tags.forEach(tag => {
+          setCheckedTags(prev =>
+            prev.some(t => t.toLowerCase() === tag.toLowerCase()) ? prev.filter(t => t.toLowerCase() !== tag.toLowerCase()) : prev
+          )
+
+          const isPresent = appliedTags.some(t => t.toLowerCase() === tag.toLowerCase())
+          if (isPresent) { setAppliedTags((prev) => prev.filter(t => t.toLowerCase() !== tag.toLowerCase())) }
+
+
+        });
+
+
+      }
+    }
+    if (action === "changeRoute") {
+      if (data.route === "home") {
+        router.push("/")
+        setAppliedTags([])
+        setCheckedTags([])
+        setSearchValue('')
+        setSort('Latest')
+        sortData('Latest', archiveData, setArchiveData)
+        setMobileOpen(false)
+      }
+      else {
+        router.push("/archive")
+        setAppliedTags([])
+        setCheckedTags([])
+        setSearchValue('')
+        setSort('Latest')
+        sortData('Latest', stashData, setStashData)
+        setMobileOpen(false)
+      }
+    }
+
+
+
 
 
 

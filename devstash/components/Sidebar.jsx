@@ -11,18 +11,14 @@ import { StateContext } from '@/contexts/State'
 import SkeletonTag from './SkeletonTag'
 import Link from 'next/link'
 import { useAuth } from '@clerk/nextjs'
-import { generateAnswer } from '@/service/GeminiService'
 
 
 export default function Sidebar() {
   const pathname = usePathname()
   const { stashData, archiveData, isLoaded,setStashData,setArchiveData } = useContext(AppContext)
   const { setSearchValue } = useContext(SearchContext)
-  const { sortAccTags, tags, generateTags } = useContext(TagContext)
+  const { sortAccTags, tags, generateTags, checkedTags, setCheckedTags,appliedTags, setAppliedTags,mobileOpen, setMobileOpen } = useContext(TagContext)
   const { activeNav, setActiveNav, setSort,sortData } = useContext(StateContext)
-  const [checkedTags, setCheckedTags] = useState([])
-  const [appliedTags, setAppliedTags] = useState([])
-  const [mobileOpen, setMobileOpen] = useState(false)
   const { isSignedIn } = useAuth();
 
 
@@ -121,7 +117,7 @@ export default function Sidebar() {
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  checked={checkedTags.includes(tag.name)}
+                  checked={checkedTags.some(t => t.toLowerCase() === tag.name.toLowerCase())}
                   onChange={() => {
                     addAppliedTags(tag.name)
                     toggleTag(tag.name)

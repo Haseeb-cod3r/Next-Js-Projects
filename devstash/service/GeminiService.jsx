@@ -113,17 +113,18 @@ const devStashTools = {
         required: ["sortAction"]
       }
     },
-    // {
-    //   name: "filterData",
-    //   description: "Use this when user wants to filter cards by applying different tags or user ask to apply different tags or user ask to show specific tag data",
-    //   parameters: {
-    //     type: "OBJECT",
-    //     properties: {
-    //       tags: { type: "ARRAY", item: { type: "STRING" }, description: "The array of tags that user ask to apply or to filter data with" },
-    //     },
-    //     required: ["tags"]
-    //   }
-    // },
+    {
+      name: "filterData",
+      description: "Use this when user wants to filter cards by applying or removing different tags or user ask to apply or remove tags different tags or user ask to show specific tag data",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          tags: { type: "ARRAY", items: { type: "STRING" }, description: "The array of tags that user ask to apply or to filter data with and always return tag from the card data" },
+          isApply:{type: "BOOLEAN", description: "This is the boolean value if user ask to add or apply tags then give true and if user ask to remove tag than give false and always give the tag from card data"}
+        },
+        required: ["tags", "isApply"]
+      }
+    },
     {
       name: "searchCard",
       description: "Use this when user wants to search for card or when user ask to search for any card",
@@ -133,6 +134,17 @@ const devStashTools = {
           searchValue: { type: "STRING", description: "The search value that user provide to search the card" },
         },
         required: ["searchValue"]
+      }
+    },
+    {
+      name: "changeRoute",
+      description: "Use this when user wants to go to archive or home or when user ask to change route like go to archive or go to home",
+      parameters: {
+        type: "OBJECT",
+        properties: {
+          route: { type: "STRING", description: "This value can be (home or archive) if user want to got to home or user ask to open home page than return 'home' but if user says go to archive or open archive then return 'archive' " },
+        },
+        required: ["route"]
       }
     },
   ]
@@ -172,6 +184,11 @@ Rules:
 - For sortData return the name of the sort action user want to sort data with there are only 4 action (Latest, Oldest, Most viewed, Least viewed) if user ask for any other option reply naturally that you cant sort data according to that action
 - For handlePinCard if user ask to pin any card return that card id and isArchived property of that card
 - For searchCard if user ask to search any card return the value user provide to search the card
+- For filterData Use this when user wants to filter cards by applying different tags or user ask to apply different tags or user ask to show specific tag data and return the tags array
+- For changeRoute return the home or archive value based on what user asked
+
+
+
 - If user asks to edit or open a card that does not exist in their cards list, do NOT call any function, just reply naturally that the card was not found
 
 Actions:
@@ -184,6 +201,8 @@ Actions:
 - sortData — user wants to sort data like (Latest, Oldest, Most viewed, Least Viewed)
 - handlePinCard — user wants to pin, mark, card
 - searchCard — user wants to search card
+- filterData — user wants to apply tags and filter data
+- changeRoute — user wants to shift page like home or archive
 
 `,
         temperature: 0.0,
