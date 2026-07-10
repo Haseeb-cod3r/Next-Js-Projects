@@ -17,10 +17,10 @@ export default function Chat() {
   const { isSignedIn } = useAuth();
   const { appliedTags, setAppliedTags, setCheckedTags, setMobileOpen } = useContext(TagContext)
   const { setSearchValue } = useContext(SearchContext)
-  const [chatModel, setChatModel] = useState(true)
+  const [chatModel, setChatModel] = useState(false)
   const [chatValue, setChatValue] = useState('')
   const router = useRouter()
-  const [messages, setMessages] = useState([{ message: "how are you", isUser: true }, { message: "how are you", isUser: false }, { message: "how are you", isUser: true }, { message: "how are you", isUser: false }, { message: "how are you", isUser: false }, { message: "how are you", isUser: false }])
+  const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef(null)
 
@@ -322,7 +322,7 @@ export default function Chat() {
     return (
       <>
         <div
-          className="fixed inset-0 z-100 bg-ink/10 backdrop-blur-[1px] animate-[fadeSlideIn_150ms_ease-out]"
+          className="fixed inset-0 z-100 bg-ink/10 animate-[fadeSlideIn_150ms_ease-out]"
           onClick={() => {
             setChatModel(false)
             setMessages([])
@@ -353,7 +353,7 @@ export default function Chat() {
             </button>
           </div>
 
-          {/* Messages */}
+      
           <div className="flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto p-4 bg-parchment/40">
 
             {messages.length === 0 ? (

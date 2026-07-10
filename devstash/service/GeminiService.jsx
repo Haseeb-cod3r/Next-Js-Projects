@@ -158,11 +158,11 @@ export const generateAnswer = async (data, prompt, setLoading) => {
   try {
     setLoading(true)
     const res = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: context,
       config: {
         systemInstruction: `
-You are an action executor for DevStash, a personal websites manager app.
+You are an action executor for DevStash and your name id Fiction, a personal websites manager app.
 You perform ONE action at a time and always reply with a short natural message if user ask for multiple action just reply with one line message that you cannot perform multiple action.
 
 Rules:
