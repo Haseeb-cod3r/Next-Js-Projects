@@ -1,4 +1,3 @@
-
 'use client'
 
 import { usePathname } from 'next/navigation'
@@ -56,14 +55,14 @@ export default function Sidebar() {
     <>
       <div className="flex items-center justify-between px-5 py-5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-brass rounded-lg flex items-center justify-center">
             <Bookmark size={15} className="text-white" />
           </div>
-          <span className="font-semibold text-sm">DevStash Manager</span>
+          <span className="font-semibold font-display text-sm text-parchment tracking-wide">DevStash Manager</span>
         </div>
 
         <button
-          className="lg:hidden p-1 text-gray-500 hover:text-gray-900"
+          className="lg:hidden p-1 text-parchment/50 hover:text-parchment transition-colors duration-150"
           onClick={() => setMobileOpen(false)}
         >
           <X size={18} />
@@ -101,8 +100,8 @@ export default function Sidebar() {
         />
       </nav>
 
-      <div className="px-3 flex flex-col bg-white overflow-auto">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-2 mb-2">
+      <div className="px-3 flex flex-col overflow-auto">
+        <p className="text-xs font-semibold text-parchment/40 uppercase tracking-widest px-2 mb-2">
           Tags
         </p>
         {!isLoaded
@@ -112,7 +111,7 @@ export default function Sidebar() {
           : tags.map(tag => (
             <label
               key={tag.name}
-              className="flex items-center justify-between px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-100 transition-colors"
+              className="flex items-center justify-between px-2 py-1.5 rounded-md cursor-pointer hover:bg-white/5 transition-colors duration-150"
             >
               <div className="flex items-center gap-2">
                 <input
@@ -122,11 +121,11 @@ export default function Sidebar() {
                     addAppliedTags(tag.name)
                     toggleTag(tag.name)
                   }}
-                  className="w-3.5 h-3.5 accent-gray-900"
+                  className="w-3.5 h-3.5 accent-brass"
                 />
-                <span className="text-sm text-gray-600">{tag.name}</span>
+                <span className="text-sm text-parchment/70">{tag.name}</span>
               </div>
-              <span className="text-xs text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full">
+              <span className="text-xs text-parchment/40 bg-white/5 px-1.5 py-0.5 rounded-full">
                 {tag.count}
               </span>
             </label>
@@ -138,16 +137,16 @@ export default function Sidebar() {
   return (
     <>
 
-      <aside className="hidden lg:flex w-52 bg-white border-r border-gray-200 flex-col sticky top-0 z-10 h-screen">
+      <aside className="hidden lg:flex w-52 bg-ink border-r border-black/20 flex-col sticky top-0 z-10 h-screen">
         {sidebarContent}
       </aside>
 
 
       <button
-        className="lg:hidden fixed top-3 left-4 z-40 p-2 bg-white border border-gray-200 rounded-lg shadow-sm"
+        className="lg:hidden fixed top-3 left-4 z-40 p-2 bg-white border border-ink/10 rounded-lg shadow-sm hover:border-brass/30 transition-colors duration-150"
         onClick={() => setMobileOpen(true)}
       >
-        <Menu size={18} className="text-gray-600" />
+        <Menu size={18} className="text-ink-muted" />
         
       </button>
 
@@ -161,7 +160,7 @@ export default function Sidebar() {
 
 
       <aside
-        className={`lg:hidden fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200
+        className={`lg:hidden fixed top-0 left-0 z-40 h-screen w-64 bg-ink border-r border-black/20 flex flex-col transform transition-transform duration-200
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         {sidebarContent}
@@ -175,10 +174,10 @@ function NavItem({ icon, label, active, onClick, isSignedIn }) {
     <Link href={label === 'Home' ? '/' : '/archive'}>
       <button
         onClick={onClick}
-        className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-colors
+        className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-all duration-150 border-l-2
           ${active
-            ? 'bg-gray-100 font-semibold text-gray-900'
-            : 'text-gray-500 font-normal hover:bg-gray-50'
+            ? 'bg-brass/15 font-semibold text-brass border-brass'
+            : 'text-parchment/50 font-normal border-transparent hover:bg-white/5 hover:text-parchment/80 hover:translate-x-0.5'
           }`}
       >
         {label === "Home" ? <div className='flex items-center gap-2'>
@@ -189,7 +188,7 @@ function NavItem({ icon, label, active, onClick, isSignedIn }) {
             {icon}
             {label}
           </div>
-          {!isSignedIn && <div> <Lock size={18} /></div>}
+          {!isSignedIn && <div className="text-parchment/40"> <Lock size={18} /></div>}
         </div>}
       </button>
     </Link>

@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useContext, useState } from 'react'
@@ -20,21 +19,21 @@ export default function DevStash() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-lg lg:text-xl font-bold text-gray-900">
-          {pathname === '/' ? 'All Stash' : 'All Archive'}
+        <h1 className="text-lg lg:text-xl font-bold font-display text-ink">
+          {pathname === '/' ? 'Stash' : 'Archive'}
         </h1>
 
         <div className="relative">
           <button
             onClick={() => setSortOpen(p => !p)}
-            className="flex items-center gap-2 border border-gray-200 bg-white rounded-lg px-3 lg:px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 border border-ink/10 bg-white rounded-lg px-3 lg:px-3.5 py-2 text-sm font-medium text-ink-muted hover:bg-ink/5 hover:border-brass/30 hover:text-ink transition-colors duration-150"
           >
             <ArrowUpDown size={13} />
             <span className="hidden sm:inline">Sort by</span>
           </button>
 
           {sortOpen && (
-            <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 w-40 overflow-hidden">
+            <div className="absolute right-0 top-full mt-1 bg-white border border-ink/10 rounded-lg shadow-lg z-20 w-40 overflow-hidden animate-[fadeSlideIn_150ms_ease-out]">
               {SORT_OPTIONS.map(opt => (
                 <button
                   key={opt}
@@ -45,8 +44,8 @@ export default function DevStash() {
                       ? sortData(opt, stashData, setStashData)
                       : sortData(opt, archiveData, setArchiveData)
                   }}
-                  className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
-                    ${sort === opt ? 'font-semibold text-gray-900 bg-gray-50' : 'text-gray-600'}`}
+                  className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-brass/10 transition-colors duration-150
+                    ${sort === opt ? 'font-semibold text-brass bg-brass/10' : 'text-ink-muted'}`}
                 >
                   {opt}
                 </button>

@@ -120,7 +120,7 @@ const devStashTools = {
         type: "OBJECT",
         properties: {
           tags: { type: "ARRAY", items: { type: "STRING" }, description: "The array of tags that user ask to apply or to filter data with and always return tag from the card data" },
-          isApply:{type: "BOOLEAN", description: "This is the boolean value if user ask to add or apply tags then give true and if user ask to remove tag than give false and always give the tag from card data"}
+          isApply: { type: "BOOLEAN", description: "This is the boolean value if user ask to add or apply tags then give true and if user ask to remove tag than give false and always give the tag from card data" }
         },
         required: ["tags", "isApply"]
       }
@@ -150,14 +150,15 @@ const devStashTools = {
   ]
 }
 
-export const generateAnswer = async (data, prompt) => {
+export const generateAnswer = async (data, prompt, setLoading) => {
   const context = `
   User's saved cards: ${JSON.stringify(data)}
   User request: ${prompt}
 `
   try {
+    setLoading(true)
     const res = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.5-flash",
       contents: context,
       config: {
         systemInstruction: `
@@ -216,12 +217,44 @@ Actions:
         }
       }
     })
+    const obj = {}
+    setLoading(false)
+    if (!(res?.functionCalls && Array.isArray(res?.functionCalls))) {
+      if (res?.text) {
+        obj.text = res.text
+        obj.args = null
+        obj.name = null
+        return obj
+      } else {
+        obj.text = null
+        obj.args = null
+        obj.name = null
+        return obj
+      }
+    }
 
-    return res
+    if (res.functionCalls[0]?.args) {
+      obj.args = res.functionCalls[0]?.args
+    } else {
+      obj.args = null
+    }
+    if (res.functionCalls[0]?.name) {
+      obj.name = res.functionCalls[0]?.name
+    } else {
+      obj.name = null
+    }
+    if (res?.text) {
+      obj.text = res.text
+    } else {
+      obj.text = "Something went wrong pleas try again!"
+    }
+    obj.error = false
+    return obj
+
   } catch (error) {
-    console.error(error
-    );
-    return "error"
+    setLoading(false)
+    console.error(error);
+    return { args: null, name: null, text: null, error: true }
   }
 
 }

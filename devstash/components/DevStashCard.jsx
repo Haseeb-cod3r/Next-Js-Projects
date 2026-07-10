@@ -31,7 +31,7 @@ export default function DevStashCard({ devStash }) {
       <span>
         {parts.map((part, index) =>
           part.toLowerCase() === highlight.toLowerCase() ? (
-            <mark key={index} className="bg-blue-200 text-blue-700 rounded-sm font-medium">
+            <mark key={index} className="bg-brass/20 text-brass rounded-sm font-medium">
               {part}
             </mark>
           ) : (
@@ -145,11 +145,11 @@ export default function DevStashCard({ devStash }) {
 
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:shadow-md transition-shadow relative overflow-hidden">
+    <div className="bg-white border border-ink/10 rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-8px_rgba(27,34,44,0.18)] hover:border-brass/30">
 
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0 flex-1">
-          <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-ink/5 flex items-center justify-center overflow-hidden flex-shrink-0">
             <img
               src={`https://www.google.com/s2/favicons?domain=${devStash.url}&sz=32`}
               alt=""
@@ -159,11 +159,11 @@ export default function DevStashCard({ devStash }) {
             />
           </div>
 
-          <div className="min-w-0 flex-1">
-            <p className="font-semibold text-sm text-gray-900 leading-tight truncate">
+          <div className="min-w-0 flex-1 overflow-hidden scroll-none">
+            <p className="font-semibold text-sm text-ink leading-tight truncate">
               {HighlightedText(devStash.title, searchValue)}
             </p>
-            <a href={devStash.url} onClick={() => incrementViewsCount(true,devStash)} target="_blank" title='url' className="text-xs text-gray-400 mt-0.5 truncate break-all">
+            <a href={devStash.url} onClick={() => incrementViewsCount(true, devStash)} target="_blank" title='url' className="text-xs text-ink-muted mt-0.5 truncate break-all font-mono">
               {devStash.url}
             </a>
           </div>
@@ -172,34 +172,34 @@ export default function DevStashCard({ devStash }) {
         <div className="relative flex-shrink-0">
           <button
             onClick={() => setMenuOpen(p => !p)}
-            className="p-1.5 rounded-md cursor-pointer text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-md cursor-pointer text-ink-muted hover:text-ink hover:bg-ink/5 transition-colors duration-150"
           >
             <MoreHorizontal size={16} />
           </button>
 
           {menuOpen && (
-            
-              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-32 overflow-hidden">
-                {(devStash.isArchived ? archiveMenu : stashMenu).map(action => (
-                  <button
-                    key={action}
-                    onClick={() => {
-                      setMenuOpen(false)
-                      devStash.isArchived ? handleArchiveAction(action) : handleStashAction(action)
-                    }}
-                    className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-gray-50 transition-colors
-                    ${action === 'Delete' ? 'text-red-500' : 'text-gray-700'}`}
-                  >
-                    {action}
-                  </button>
-                ))}
-              </div>
-             
+
+            <div className="absolute right-0 top-full mt-1 bg-white border border-ink/10 rounded-lg shadow-lg z-10 w-32 overflow-hidden animate-[fadeSlideIn_150ms_ease-out]">
+              {(devStash.isArchived ? archiveMenu : stashMenu).map(action => (
+                <button
+                  key={action}
+                  onClick={() => {
+                    setMenuOpen(false)
+                    devStash.isArchived ? handleArchiveAction(action) : handleStashAction(action)
+                  }}
+                  className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-ink/5 transition-colors duration-150
+                    ${action === 'Delete' ? 'text-wine' : 'text-ink/80'}`}
+                >
+                  {action}
+                </button>
+              ))}
+            </div>
+
           )}
         </div>
       </div>
 
-      <p className="text-sm text-gray-500 leading-relaxed line-clamp-3 break-words">
+      <p className="text-sm text-ink-muted leading-relaxed line-clamp-3 break-words">
         {devStash.description}
       </p>
 
@@ -207,14 +207,14 @@ export default function DevStashCard({ devStash }) {
         {devStash.tags.map(tag => (
           <span
             key={crypto.randomUUID()}
-            className="text-xs bg-gray-100 text-gray-500 font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap"
+            className="text-[11px] font-mono tracking-wide uppercase bg-brass/10 text-brass border border-brass/25 font-medium px-2.5 py-0.5 rounded-full whitespace-nowrap"
           >
             {tag}
           </span >
         ))}
       </div>
 
-      <div className="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-100">
+      <div className="flex items-center gap-4 text-xs text-ink-muted pt-2 border-t border-ink/10">
         <span className="flex items-center gap-1 flex-shrink-0">
           <Eye size={11} />
           {devStash.views}
@@ -229,13 +229,11 @@ export default function DevStashCard({ devStash }) {
         </span>
         <span
           onClick={() => { devStash.isArchived ? sortPin(archiveData, setArchiveData) : sortPin(stashData, setStashData) }}
-          className='flex items-center cursor-pointer ml-auto hover:text-black transition-colors'
+          className='flex items-center cursor-pointer ml-auto hover:text-brass transition-colors duration-150 hover:scale-110'
         >
-          <Pin size={15} className={`${devStash.isPinned ? "fill-black text-black" : ""}`} />
+          <Pin size={15} className={`transition-colors duration-150 ${devStash.isPinned ? "fill-brass text-brass" : ""}`} />
         </span>
       </div>
     </div>
   )
 }
-
-

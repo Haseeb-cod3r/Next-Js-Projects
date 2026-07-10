@@ -180,23 +180,23 @@ export default function Modal({ setIsModalOpen }) {
   return (
     <div
       onClick={() => resetAndCloseForm()}
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-999"
+      className="fixed inset-0 bg-ink/60 backdrop-blur-[2px] flex items-center justify-center z-999 animate-[fadeSlideIn_150ms_ease-out]"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden"
+        className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-[modalPop_200ms_ease-out]"
       >
 
-        <div className="h-1 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500" />
+        <div className="h-1 w-full bg-gradient-to-r from-brass via-brass to-brass" />
 
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-ink/10">
           <div>
-            <h2 className="text-base font-bold text-gray-900">DevStash</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Save a new link to your collection</p>
+            <h2 className="text-base font-bold font-display text-ink">DevStash</h2>
+            <p className="text-xs text-ink-muted mt-0.5">Save a new link to your collection</p>
           </div>
           <button
             onClick={() => resetAndCloseForm()}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-lg text-ink-muted hover:text-ink hover:bg-ink/5 transition-colors duration-150"
           >
             <X size={18} />
           </button>
@@ -207,11 +207,11 @@ export default function Modal({ setIsModalOpen }) {
 
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <label className="text-xs font-semibold text-ink-muted uppercase tracking-wider">
               URL
             </label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-              <Link size={15} className="text-gray-400 shrink-0" />
+            <div className="flex items-center gap-2 border border-ink/15 rounded-xl px-3 py-2.5 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
+              <Link size={15} className="text-ink-muted/70 shrink-0" />
               <input
                 name='URL'
                 onKeyDown={handleOnKeyDown}
@@ -220,18 +220,18 @@ export default function Modal({ setIsModalOpen }) {
                 onChange={(e) => handleOnChange(e, "url")}
                 type="url"
                 placeholder="https://example.com"
-                className="w-full text-sm text-gray-700 placeholder-gray-300 outline-none bg-transparent"
+                className="w-full text-sm text-ink placeholder-ink-muted/40 outline-none bg-transparent"
               />
             </div>
           </div>
 
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <label className="text-xs font-semibold text-ink-muted uppercase tracking-wider">
               Title
             </label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-              <FileText size={15} className="text-gray-400 shrink-0" />
+            <div className="flex items-center gap-2 border border-ink/15 rounded-xl px-3 py-2.5 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
+              <FileText size={15} className="text-ink-muted/70 shrink-0" />
               <input
                 name='title'
                 onKeyDown={handleOnKeyDown}
@@ -240,18 +240,18 @@ export default function Modal({ setIsModalOpen }) {
                 onChange={(e) => handleOnChange(e, "title")}
                 type="text"
                 placeholder="Tailwind CSS"
-                className="w-full text-sm text-gray-700 placeholder-gray-300 outline-none bg-transparent"
+                className="w-full text-sm text-ink placeholder-ink-muted/40 outline-none bg-transparent"
               />
             </div>
           </div>
 
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <label className="text-xs font-semibold text-ink-muted uppercase tracking-wider">
               Description
             </label>
-            <div className="flex items-start gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-              <AlignLeft size={15} className="text-gray-400 shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2 border border-ink/15 rounded-xl px-3 py-2.5 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
+              <AlignLeft size={15} className="text-ink-muted/70 shrink-0 mt-0.5" />
               <textarea
                 name='description'
                 onKeyDown={handleOnKeyDown}
@@ -260,18 +260,18 @@ export default function Modal({ setIsModalOpen }) {
                 onChange={(e) => handleOnChange(e, "description")}
                 placeholder="What is this link about..."
                 rows={3}
-                className="w-full text-sm text-gray-700 placeholder-gray-300 outline-none resize-none bg-transparent"
+                className="w-full text-sm text-ink placeholder-ink-muted/40 outline-none resize-none bg-transparent"
               />
             </div>
           </div>
 
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <label className="text-xs font-semibold text-ink-muted uppercase tracking-wider">
               Tags
             </label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-              <Tag size={15} className="text-gray-400 shrink-0" />
+            <div className="flex items-center gap-2 border border-ink/15 rounded-xl px-3 py-2.5 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
+              <Tag size={15} className="text-ink-muted/70 shrink-0" />
               <input
                 name='tags'
                 onKeyDown={handleOnKeyDown}
@@ -280,7 +280,7 @@ export default function Modal({ setIsModalOpen }) {
                 onChange={(e) => handleOnChange(e, "tags")}
                 type="text"
                 placeholder="Framework, Tools, Design  (comma separated)"
-                className="w-full text-sm text-gray-700 placeholder-gray-300 outline-none bg-transparent"
+                className="w-full text-sm text-ink placeholder-ink-muted/40 outline-none bg-transparent"
               />
             </div>
           </div>
@@ -291,13 +291,13 @@ export default function Modal({ setIsModalOpen }) {
         <div className="px-6 pb-6 flex gap-3">
           <button
             onClick={() => resetAndCloseForm()}
-            className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-500 hover:bg-gray-50 transition-colors"
+            className="flex-1 py-2.5 rounded-xl border border-ink/15 text-sm font-semibold text-ink-muted hover:bg-ink/5 transition-colors duration-150"
           >
             Cancel
           </button>
           <button
             onClick={() => addData()}
-            className="flex-1 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold transition-colors"
+            className="flex-1 py-2.5 rounded-xl bg-brass hover:bg-brass/90 text-white text-sm font-semibold transition-all duration-150 hover:-translate-y-0.5 active:scale-95 active:translate-y-0"
           >
             {isEditMode.isArchiveEdit ? "Edit Archive" : isEditMode.edit ? "Edit Stash" : activeNav === "home" ? "Add DevStash" : "Add Archive"}
           </button>
