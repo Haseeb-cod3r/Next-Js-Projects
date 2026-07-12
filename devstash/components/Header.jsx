@@ -35,7 +35,7 @@ export default function Header() {
           placeholder="Search by title..."
           value={searchValue}
           onChange={e => setSearchValue(e.target.value)}
-          className="bg-transparent outline-none text-sm text-ink placeholder-ink-muted/60 w-full"
+          className="bg-transparent outline-none text-sm text-ink placeholder-ink-muted/60 w-full cursor-text"
         />
       </div>
 

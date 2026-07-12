@@ -20,14 +20,25 @@ export default function Chat() {
   const [chatModel, setChatModel] = useState(false)
   const [chatValue, setChatValue] = useState('')
   const router = useRouter()
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState(() => {
+    const stored = sessionStorage.getItem("chatMessages")
+    if (stored) {
+      return JSON.parse(stored)
+    }
+    return []
+  })
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef(null)
 
 
-  useEffect(()=>{
-   scrollRef?.current?.scrollIntoView({behavior:"smooth"})
-  },[messages,loading])
+  useEffect(() => {
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages, loading])
+  useEffect(() => {
+
+    sessionStorage.setItem("chatMessages", JSON.stringify(messages))
+
+  }, [messages])
 
 
 
@@ -48,11 +59,11 @@ export default function Chat() {
     }
 
 
-    if ( text) {
+    if (text) {
       setMessages((prev) =>
         [...prev, { message: text, isUser: false }]
       )
-    } else if(!error){
+    } else if (!error) {
       setMessages((prev) => [...prev, { message: "Something went wrong please try again!", isUser: false }])
     }
     if (!(args && name)) return
@@ -311,11 +322,24 @@ export default function Chat() {
   if (!chatModel) {
     return (
       <button
-        onClick={() => setChatModel(true)}
-        className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-100 h-14 w-14 rounded-full bg-brass text-white flex items-center justify-center shadow-[0_8px_24px_-6px_rgba(184,134,60,0.5)] hover:shadow-[0_10px_28px_-4px_rgba(184,134,60,0.6)] hover:scale-120 active:scale-95 transition-all duration-200 cursor-pointer"
+        onClick={() => {
+          setChatModel(true)
+          const stored = sessionStorage.getItem("chatMessages")
+          if (stored) {
+            try {
+              setMessages(JSON.parse(stored))
+            } catch (e) {
+              console.error("Failed to parse chatMessages", e)
+              setMessages([])
+            }
+          }
+        }
+
+        }
+        className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-500 h-14 w-14 rounded-full bg-brass text-white flex items-center justify-center shadow-[0_8px_24px_-6px_rgba(184,134,60,0.5)] hover:shadow-[0_10px_28px_-4px_rgba(184,134,60,0.6)] hover:scale-120 active:scale-95 transition-all duration-200 cursor-pointer"
       >
         <MessageSquareText size={24} />
-      </button>
+      </button >
     )
   }
   if (chatModel) {
@@ -325,7 +349,6 @@ export default function Chat() {
           className="fixed inset-0 z-100 bg-ink/10 animate-[fadeSlideIn_150ms_ease-out]"
           onClick={() => {
             setChatModel(false)
-            setMessages([])
           }}
         ></div>
 
@@ -345,7 +368,6 @@ export default function Chat() {
             <button
               onClick={() => {
                 setChatModel(false)
-                setMessages([])
               }}
               className="p-1.5 rounded-lg text-parchment/60 hover:text-parchment hover:bg-white/10 transition-colors duration-150 cursor-pointer"
             >
@@ -353,7 +375,7 @@ export default function Chat() {
             </button>
           </div>
 
-      
+
           <div className="flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto p-4 bg-parchment/40">
 
             {messages.length === 0 ? (
@@ -399,11 +421,12 @@ export default function Chat() {
           <div className="flex items-center gap-2 p-3 border-t border-ink/10 bg-white flex-shrink-0">
             <div className="flex-1 flex items-center border border-ink/15 rounded-xl px-3 py-2 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
               <input
+                disabled={loading}
                 onKeyDown={handleOnKeyDown}
                 value={chatValue}
                 onChange={(e) => setChatValue(e.target.value)}
                 placeholder="Ask the assistant..."
-                className="border-none outline-none w-full text-sm text-ink placeholder-ink-muted/50 bg-transparent"
+                className={`border-none outline-none w-full text-sm text-ink placeholder-ink-muted/50 ${loading ? 'cursor-not-allowed' : 'cursor-text'} bg-transparent`}
                 type="text"
               />
             </div>

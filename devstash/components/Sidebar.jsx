@@ -1,3 +1,4 @@
+
 'use client'
 
 import { usePathname } from 'next/navigation'
@@ -10,14 +11,15 @@ import { StateContext } from '@/contexts/State'
 import SkeletonTag from './SkeletonTag'
 import Link from 'next/link'
 import { useAuth } from '@clerk/nextjs'
+import HowItWorks from './HowItWorks'
 
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const { stashData, archiveData, isLoaded,setStashData,setArchiveData } = useContext(AppContext)
+  const { stashData, archiveData, isLoaded, setStashData, setArchiveData } = useContext(AppContext)
   const { setSearchValue } = useContext(SearchContext)
-  const { sortAccTags, tags, generateTags, checkedTags, setCheckedTags,appliedTags, setAppliedTags,mobileOpen, setMobileOpen } = useContext(TagContext)
-  const { activeNav, setActiveNav, setSort,sortData } = useContext(StateContext)
+  const { sortAccTags, tags, generateTags, checkedTags, setCheckedTags, appliedTags, setAppliedTags, mobileOpen, setMobileOpen } = useContext(TagContext)
+  const { activeNav, setActiveNav, setSort, sortData } = useContext(StateContext)
   const { isSignedIn } = useAuth();
 
 
@@ -100,7 +102,7 @@ export default function Sidebar() {
         />
       </nav>
 
-      <div className="px-3 flex flex-col overflow-auto">
+      <div className="px-3 flex-1 min-h-0 flex flex-col overflow-auto">
         <p className="text-xs font-semibold text-parchment/40 uppercase tracking-widest px-2 mb-2">
           Tags
         </p>
@@ -131,6 +133,10 @@ export default function Sidebar() {
             </label>
           ))}
       </div>
+
+      <div className="px-3 py-3 border-t border-white/10 flex-shrink-0">
+        <HowItWorks />
+      </div>
     </>
   )
 
@@ -147,7 +153,7 @@ export default function Sidebar() {
         onClick={() => setMobileOpen(true)}
       >
         <Menu size={18} className="text-ink-muted" />
-        
+
       </button>
 
 
