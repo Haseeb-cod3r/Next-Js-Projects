@@ -20,7 +20,7 @@ export default function DevStash() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-lg lg:text-xl font-bold font-sans animate-[float_3s_ease-in-out_infinite]">
-          <span className=" text-[30px] bg-gradient-to-r from-ink via-brass to-brass bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_4s_linear_infinite]">
+          <span className=" text-[30px] bg-gradient-to-r from-brass via-ink to-brass bg-[length:200%_auto] bg-clip-text text-transparent animate-[shimmer_4s_linear_infinite]">
             {pathname === '/' ? 'Stash' : 'Archive'}
           </span>
         </h1>

@@ -134,9 +134,13 @@ export default function Sidebar() {
           ))}
       </div>
 
-      <div className="px-3 py-3 border-t border-white/10 flex-shrink-0">
+     <div className="px-3 py-3 border-t border-white/10 flex-shrink-0 flex flex-col gap-1 items-center justify-center">
         <HowItWorks />
+        <p className="text-[11px] text-parchment/30 text-center pt-1 font-mono">
+          © {new Date().getFullYear()} DevStash
+        </p>
       </div>
+      
     </>
   )
 

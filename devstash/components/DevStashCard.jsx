@@ -145,7 +145,7 @@ export default function DevStashCard({ devStash }) {
 
 
   return (
-    <div className="bg-white border border-ink/10 rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-8px_rgba(27,34,44,0.18)] hover:border-brass/30">
+    <div className="bg-white border rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden transition-all duration-200 hover:scale-102 hover:shadow-[0_8px_24px_-8px_rgba(27,34,44,0.18)] border-brass/30">
 
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0 flex-1">

@@ -25,7 +25,7 @@ export default function Header() {
   }, [searchValue, stashData, archiveData])
 
   return (
-    <header className="h-15 bg-parchment border-b border-ink/10 flex gap-2 items-center justify-between lg:px-8 sticky top-0 z-30">
+    <header className="h-15 bg-parchment border-b border-ink/10 flex gap-2 items-center justify-between lg:px-8 sticky top-0 z-5">
 
 
       <div className="flex items-center gap-2 bg-white border border-ink/10 rounded-lg px-3 py-2 w-40 sm:w-64 lg:w-72 ml-16 lg:ml-0 transition-colors duration-150 focus-within:border-brass/40 focus-within:shadow-[0_0_0_3px_rgba(184,134,60,0.1)]">

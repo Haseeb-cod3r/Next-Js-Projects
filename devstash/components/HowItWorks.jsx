@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import {
-  HelpCircle, X, BookOpen, Search, ArrowUpDown, Pin,
+  HelpCircle, X, BookOpen, Search, ArrowUpDown,
   Archive, Sparkles, LogIn, ChevronRight
 } from 'lucide-react'
 
@@ -82,7 +82,7 @@ const SECTIONS = [
 ]
 
 export default function HowItWorks() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const [activeId, setActiveId] = useState(SECTIONS[0].id)
 
   const active = SECTIONS.find((s) => s.id === activeId)
@@ -92,7 +92,7 @@ export default function HowItWorks() {
    
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-all duration-150 border-l-2 border-transparent text-parchment/50 hover:bg-white/5 hover:text-parchment/80 cursor-pointer"
+        className="flex items-center justify-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-all duration-150 border-l-2 border-transparent text-brass hover:bg-white/5 cursor-pointer"
       >
         <HelpCircle size={15} />
         How it works
