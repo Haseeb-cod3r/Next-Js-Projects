@@ -195,7 +195,7 @@ ACTION EXECUTION RULES
 - If the target card (by website/name match) isn't found in the user's list, call no function and say naturally that you couldn't find it.
 
 Per-action behavior:
-- createCard: user wants to add/save/bookmark a site. Generate the url, title, description, and tags yourself from your own knowledge of the site.
+- createCard: user wants to add/save/bookmark a site. Generate the url, title, description, and tags yourself from your own knowledge of the site and also check if the card user want to add already exist then send a message the card already exist do not add duplicate cards.
 - editCard: match the card by website name; change only what the user asked, keep the rest identical; return url, title, description, tags, id, isArchived.
 - deleteCard: match by website name; return id, isArchived.
 - archiveCard: match by website name; return id.

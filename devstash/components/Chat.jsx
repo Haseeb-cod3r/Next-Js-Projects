@@ -29,22 +29,29 @@ export default function Chat() {
   })
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef(null)
+  const inpRef = useRef(null)
 
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, loading])
+
   useEffect(() => {
-
     sessionStorage.setItem("chatMessages", JSON.stringify(messages))
-
   }, [messages])
+
+  useEffect(() => {
+    if (!loading) {
+      inpRef.current?.focus()
+    }
+  }, [loading])
 
 
 
 
   async function send(data, prompt) {
     setChatValue("")
+
     setMessages((prev) =>
       [...prev, { message: prompt, isUser: true }]
     )
@@ -57,8 +64,6 @@ export default function Chat() {
     if (error) {
       setMessages((prev) => [...prev, { message: "Something went wrong please try again!", isUser: false }])
     }
-
-
     if (text) {
       setMessages((prev) =>
         [...prev, { message: text, isUser: false }]
@@ -104,10 +109,14 @@ export default function Chat() {
   }
 
   function addDataThroughAi(data) {
-
+    const newTagsArr = data.tags.map((tag) => {
+      const trimmed = tag.trim()
+      if (!trimmed) return trimmed
+      return tag[0].toUpperCase() + tag.slice(1).toLowerCase()
+    })
 
     const newData = [{
-      ...data, id: crypto.randomUUID(), created: Date.now(), isArchived: false, views: 0, isPinned: false
+      ...data, tags: newTagsArr, id: crypto.randomUUID(), created: Date.now(), isArchived: false, views: 0, isPinned: false
     }, ...stashData,]
     setStashData(sortData("date", newData))
   }
@@ -421,6 +430,7 @@ export default function Chat() {
           <div className="flex items-center gap-2 p-3 border-t border-ink/10 bg-white flex-shrink-0">
             <div className="flex-1 flex items-center border border-ink/15 rounded-xl px-3 py-2 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
               <input
+                ref={inpRef}
                 disabled={loading}
                 onKeyDown={handleOnKeyDown}
                 value={chatValue}
