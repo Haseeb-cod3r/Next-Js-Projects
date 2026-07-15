@@ -50,6 +50,9 @@ export default function Chat() {
 
 
   async function send(data, prompt) {
+    if (chatValue === "") {
+      return
+    }
     setChatValue("")
 
     setMessages((prev) =>
@@ -313,11 +316,6 @@ export default function Chat() {
     }
 
 
-
-
-
-
-
   }
 
 
@@ -390,7 +388,7 @@ export default function Chat() {
             {messages.length === 0 ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center gap-2 text-ink-muted">
                 <Bot size={32} className="text-ink/20" />
-                <p className="text-sm">No messages yet — ask me to add, find, or organize a stash.</p>
+                <p className="text-sm">No messages yet ask me to add, find, or organize a stash.</p>
               </div>
             ) : messages.map((obj) => (
               <div

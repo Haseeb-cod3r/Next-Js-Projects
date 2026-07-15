@@ -27,14 +27,14 @@ export default function DevStash() {
         <div className="relative">
           <button
             onClick={() => setSortOpen(p => !p)}
-            className="flex items-center gap-2 border border-ink/10 bg-white rounded-lg px-3 lg:px-3.5 py-2 text-sm font-medium text-ink-muted hover:bg-ink/5 hover:border-brass/30 hover:text-ink transition-colors duration-150"
+            className="flex items-center gap-2 border border-ink/10 bg-white rounded-lg px-3 lg:px-3.5 py-2 text-sm font-medium text-ink-muted hover:bg-ink/5 hover:border-brass/30 hover:text-ink transition-colors duration-150 cursor-pointer"
           >
             <ArrowUpDown size={13} />
-            <span className="hidden sm:inline">Sort by</span>
+            <span className="hidden sm:inline ">Sort by</span>
           </button>
 
           {sortOpen && (
-            <div className="absolute right-0 top-full mt-1 bg-white border border-ink/10 rounded-lg shadow-lg z-20 w-40 overflow-hidden animate-[fadeSlideIn_150ms_ease-out]">
+            <div className="absolute right-0 top-full mt-1 bg-white border border-ink/10 rounded-lg shadow-lg z-20 w-40 overflow-hidden animate-[fadeSlideIn_150ms_ease-out] ">
               {SORT_OPTIONS.map(opt => (
                 <button
                   key={opt}
@@ -46,7 +46,7 @@ export default function DevStash() {
                       : sortData(opt, archiveData, setArchiveData)
                   }}
                   className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-brass/10 transition-colors duration-150
-                    ${sort === opt ? 'font-semibold text-brass bg-brass/10' : 'text-ink-muted'}`}
+                    ${sort === opt ? 'font-semibold text-brass bg-brass/10' : 'text-ink-muted cursor-pointer'}`}
                 >
                   {opt}
                 </button>

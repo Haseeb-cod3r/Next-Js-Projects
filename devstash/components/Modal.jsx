@@ -47,7 +47,7 @@ export default function Modal({ setIsModalOpen }) {
   }
   function validateForm() {
     if (formData.url === "") {
-      toast.error("Please provide a URL for your stash")
+      toast.error("Please provide a URL for your card")
       return false
 
     }
@@ -56,16 +56,16 @@ export default function Modal({ setIsModalOpen }) {
       return false
     }
     if (formData.title === "") {
-      toast.error("Please provide a title for your stash")
+      toast.error("Please provide a title for your card")
       return false
     }
     if (formData.description === "") {
-      toast.error("Please provide a description for your stash")
+      toast.error("Please provide a description for your card")
       return false
 
     }
     if (formData.tags.length === 0) {
-      toast.error("Please provide a tags for your stash")
+      toast.error("Please provide a tags for your card")
       return false
 
     }
@@ -87,7 +87,7 @@ export default function Modal({ setIsModalOpen }) {
       toast.error("Please remove duplicate tags!")
       return false
     } else if (hasDuplicates(formData.tags) === "comma") {
-      toast.error("Remove leading or trailing commas.")
+      toast.error("Remove leading, trailing or extra commas from tag.")
       return false
     }
 

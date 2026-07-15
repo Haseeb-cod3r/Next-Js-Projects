@@ -187,7 +187,7 @@ function NavItem({ icon, label, active, onClick, isSignedIn }) {
         className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-all duration-150 border-l-2
           ${active
             ? 'bg-brass/15 font-semibold text-brass border-brass'
-            : 'text-parchment/50 font-normal border-transparent hover:bg-white/5 hover:text-parchment/80 hover:translate-x-0.5'
+            : 'text-parchment/50 font-normal border-transparent hover:bg-white/5 hover:text-parchment/80 hover:translate-x-0.5 cursor-pointer'
           }`}
       >
         {label === "Home" ? <div className='flex items-center gap-2'>

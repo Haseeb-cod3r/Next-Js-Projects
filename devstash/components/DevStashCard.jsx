@@ -145,7 +145,7 @@ export default function DevStashCard({ devStash }) {
 
 
   return (
-    <div className="bg-white border rounded-xl p-4 flex flex-col gap-3 relative overflow-hidden transition-all duration-200 hover:scale-102 hover:shadow-[0_8px_24px_-8px_rgba(27,34,44,0.18)] border-brass/30">
+    <div className="bg-white border rounded-xl p-4 flex flex-col gap-5 relative overflow-hidden transition-all duration-200 hover:scale-102 hover:shadow-[0_8px_24px_-8px_rgba(27,34,44,0.18)] border-brass/30">
 
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0 flex-1">
@@ -179,7 +179,7 @@ export default function DevStashCard({ devStash }) {
 
           {menuOpen && (
 
-            <div className="absolute right-0 top-full mt-1 bg-white border border-ink/10 rounded-lg shadow-lg z-10 w-32 overflow-hidden animate-[fadeSlideIn_150ms_ease-out]">
+            <div className="absolute right-0 top-5 mt-1 bg-white border border-ink/10 rounded-lg shadow-lg z-10 w-32 overflow-hidden animate-[fadeSlideIn_150ms_ease-out]">
               {(devStash.isArchived ? archiveMenu : stashMenu).map(action => (
                 <button
                   key={action}
@@ -188,7 +188,7 @@ export default function DevStashCard({ devStash }) {
                     devStash.isArchived ? handleArchiveAction(action) : handleStashAction(action)
                   }}
                   className={`block w-full px-3.5 py-2 text-left text-sm hover:bg-ink/5 transition-colors duration-150
-                    ${action === 'Delete' ? 'text-wine' : 'text-ink/80'}`}
+                    ${action === 'Delete' ? 'text-brass' : 'text-ink/80'}`}
                 >
                   {action}
                 </button>
