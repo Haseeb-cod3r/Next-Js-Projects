@@ -39,7 +39,7 @@ export default function Chat() {
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages, loading])
+  }, [messages, loading, chatModel])
 
   useEffect(() => {
     sessionStorage.setItem("chatMessages", JSON.stringify(messages))

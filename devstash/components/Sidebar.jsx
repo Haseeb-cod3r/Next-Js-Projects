@@ -2,7 +2,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { Bookmark, Home, Archive, X, Menu, Lock } from 'lucide-react'
 import { AppContext } from '@/contexts/AppData'
 import { SearchContext } from '@/contexts/Search'
@@ -147,7 +147,7 @@ export default function Sidebar() {
   return (
     <>
 
-      <aside className="hidden lg:flex w-52 bg-ink border-r border-black/20 flex-col sticky top-0 z-10 h-screen">
+      <aside className="hidden lg:flex w-62 bg-ink border-r border-black/20 flex-col sticky top-0 z-10 h-screen">
         {sidebarContent}
       </aside>
 

@@ -28,7 +28,7 @@ export default function Header() {
     <header className="h-15 bg-parchment border-b border-ink/10 flex gap-2 items-center justify-between lg:px-8 sticky top-0 z-5">
 
 
-      <div className="flex items-center gap-2 bg-white border border-ink/10 rounded-lg px-3 py-2 w-40 sm:w-64 lg:w-72 ml-16 lg:ml-0 transition-colors duration-150 focus-within:border-brass/40 focus-within:shadow-[0_0_0_3px_rgba(184,134,60,0.1)]">
+      <div className="flex items-center gap-2 bg-white border border-ink/10 rounded-lg px-3 py-2 w-full sm:w-full lg:w-full ml-16 lg:ml-0 transition-colors duration-150 focus-within:border-brass/40 focus-within:shadow-[0_0_0_3px_rgba(184,134,60,0.1)]">
         <Search size={15} className="text-ink-muted flex-shrink-0" />
         <input
           type="text"
@@ -46,7 +46,7 @@ export default function Header() {
           className="flex items-center gap-1.5 bg-brass hover:bg-brass/90 text-white text-sm font-medium px-3 lg:px-4 py-2 rounded-lg transition-all duration-150 cursor-pointer hover:-translate-y-0.5 active:scale-95 active:translate-y-0"
         >
           <Plus size={18} />
-          <span className="hidden sm:inline">
+          <span className="hidden sm:inline whitespace-nowrap">
             {pathname === '/' ? 'Add DevStash' : 'Add Archive'}
           </span>
         </button>
@@ -58,7 +58,7 @@ export default function Header() {
             <>
               <Show when="signed-out">
                 <SignInButton mode="modal">
-                  <button className="h-[35px] w-[65px] bg-ink  hover:bg-ink/90 text-white rounded-lg transition-all duration-200 cursor-pointer hover:-translate-y-0.5 active:scale-95 flex justify-center items-center">
+                  <button className="h-[35px] w-[65px] bg-ink  hover:bg-ink/90 text-white rounded-lg transition-all duration-200 cursor-pointer hover:-translate-y-0.5 active:scale-95 flex justify-center items-center whitespace-nowrap">
                     Sign In
                   </button>
                 </SignInButton>
