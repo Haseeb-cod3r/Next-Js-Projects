@@ -20,17 +20,22 @@ export default function Chat() {
   const [chatModel, setChatModel] = useState(false)
   const [chatValue, setChatValue] = useState('')
   const router = useRouter()
-  const [messages, setMessages] = useState(() => {
-    const stored = sessionStorage.getItem("chatMessages")
-    if (stored) {
-      return JSON.parse(stored)
-    }
-    return []
-  })
+  const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const scrollRef = useRef(null)
   const inpRef = useRef(null)
 
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem("chatMessages")
+    if (stored) {
+      try {
+        setMessages(JSON.parse(stored))
+      } catch (e) {
+        console.error("Failed to parse chatMessages", e)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView({ behavior: "smooth" })
@@ -319,30 +324,12 @@ export default function Chat() {
   }
 
 
-
-
-
-
-
-
-
   if (!chatModel) {
     return (
       <button
         onClick={() => {
           setChatModel(true)
-          const stored = sessionStorage.getItem("chatMessages")
-          if (stored) {
-            try {
-              setMessages(JSON.parse(stored))
-            } catch (e) {
-              console.error("Failed to parse chatMessages", e)
-              setMessages([])
-            }
-          }
-        }
-
-        }
+        }}
         className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-500 h-14 w-14 rounded-full bg-brass text-white flex items-center justify-center shadow-[0_8px_24px_-6px_rgba(184,134,60,0.5)] hover:shadow-[0_10px_28px_-4px_rgba(184,134,60,0.6)] hover:scale-120 active:scale-95 transition-all duration-200 cursor-pointer"
       >
         <MessageSquareText size={24} />
@@ -361,7 +348,6 @@ export default function Chat() {
 
         <div className="z-150 fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-10 sm:right-10 h-[70vh] max-h-[560px] sm:h-[520px] w-auto sm:w-[400px] flex flex-col rounded-2xl overflow-hidden bg-white border border-ink/10 shadow-2xl animate-[modalPop_200ms_ease-out]">
 
-          {/* Header */}
           <div className="flex items-center justify-between px-4 py-3.5 bg-ink flex-shrink-0">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-full bg-brass/20 flex items-center justify-center">
@@ -424,7 +410,6 @@ export default function Chat() {
             <div ref={scrollRef} />
           </div>
 
-          {/* Input */}
           <div className="flex items-center gap-2 p-3 border-t border-ink/10 bg-white flex-shrink-0">
             <div className="flex-1 flex items-center border border-ink/15 rounded-xl px-3 py-2 focus-within:border-brass/50 focus-within:ring-2 focus-within:ring-brass/10 transition-all duration-150">
               <input

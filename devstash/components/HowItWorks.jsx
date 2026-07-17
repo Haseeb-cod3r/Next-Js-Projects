@@ -83,18 +83,16 @@ const SECTIONS = [
 ]
 
 export default function HowItWorks() {
-  const [open, setOpen] = useState(() => {
-    const stored = sessionStorage.getItem("guide")
-    if (stored) {
-      return JSON.parse(stored)
-    }
-    return true
-  })
+  const [open, setOpen] = useState(true)
   const [activeId, setActiveId] = useState(SECTIONS[0].id)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    const stored = sessionStorage.getItem("guide")
+    if (stored) {
+      setOpen(JSON.parse(stored))
+    }
   }, [])
 
   const active = SECTIONS.find((s) => s.id === activeId)
@@ -109,11 +107,10 @@ export default function HowItWorks() {
         }}
       />
 
-      <div className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-150 w-[70vw] md:w-[720px] max-h-[70vh] md:h-[560px] flex flex-col md:flex-row rounded-2xl overflow-hidden bg-white border border-ink/10 shadow-2xl animate-[modalPop_200ms_ease-out] m-auto">
+      <div className="fixed inset-x-3 bottom-3 top-16 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 z-150 sm:w-[92vw] sm:max-w-[720px] h-auto sm:h-[min(560px,85vh)] max-h-[85vh] flex flex-col sm:flex-row rounded-2xl overflow-hidden bg-white border border-ink/10 shadow-2xl transition-[width,height] duration-300 ease-out animate-[modalPop_200ms_ease-out]">
 
-
-        <div className="bg-ink md:w-56 flex-shrink-0 flex flex-col">
-          <div className="flex items-center justify-between px-5 py-4 md:pb-2">
+        <div className="bg-ink w-full sm:w-48 md:w-56 flex-shrink-0 flex flex-col transition-[width] duration-300 ease-out">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 sm:pb-2">
             <div>
               <p className="font-display font-semibold text-parchment text-sm">How it works</p>
               <p className="text-[11px] text-parchment/40">A quick tour of DevStash</p>
@@ -123,13 +120,13 @@ export default function HowItWorks() {
                 setOpen(false)
                 sessionStorage.setItem("guide", JSON.stringify(false))
               }}
-              className="md:hidden p-1.5 rounded-lg text-parchment/60 hover:text-parchment hover:bg-white/10 transition-colors duration-150"
+              className="sm:hidden p-1.5 rounded-lg text-parchment/60 hover:text-parchment hover:bg-white/10 transition-colors duration-150"
             >
               <X size={16} />
             </button>
           </div>
 
-          <nav className="flex md:flex-col overflow-x-auto md:overflow-visible px-2 md:px-3 py-2 gap-0.5">
+          <nav className="flex sm:flex-col overflow-x-auto sm:overflow-visible px-2 sm:px-3 py-2 gap-0.5">
             {SECTIONS.map((section) => {
               const Icon = section.icon
               const isActive = section.id === activeId
@@ -137,13 +134,13 @@ export default function HowItWorks() {
                 <button
                   key={section.id}
                   onClick={() => setActiveId(section.id)}
-                  className={`flex items-center gap-2.5 flex-shrink-0 md:w-full px-3 py-2.5 rounded-lg text-sm text-left transition-all duration-150 border-l-2 whitespace-nowrap
+                  className={`flex items-center gap-2 sm:gap-2.5 flex-shrink-0 sm:w-full px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm text-left transition-all duration-150 border-l-2 whitespace-nowrap
                     ${isActive
                       ? 'bg-brass/15 font-semibold text-brass border-brass'
                       : 'text-parchment/50 border-transparent hover:bg-white/5 hover:text-parchment/80'
                     }`}
                 >
-                  <Icon size={15} />
+                  <Icon size={14} className="sm:w-[15px] sm:h-[15px]" />
                   {section.label}
                 </button>
               )
@@ -151,9 +148,8 @@ export default function HowItWorks() {
           </nav>
         </div>
 
-
         <div className="flex-1 min-h-0 flex flex-col bg-parchment/40">
-          <div className="hidden md:flex items-center justify-end px-5 pt-4">
+          <div className="hidden sm:flex items-center justify-end px-5 pt-4">
             <button
               onClick={() => setOpen(false)}
               className="p-1.5 rounded-lg text-ink-muted hover:text-ink hover:bg-ink/5 transition-colors duration-150"
@@ -162,29 +158,28 @@ export default function HowItWorks() {
             </button>
           </div>
 
-          <div key={active.id} className="flex-1 min-h-0 overflow-y-auto px-6 md:px-8 py-4 md:py-2 animate-[fadeSlideIn_200ms_ease-out]">
+          <div key={active.id} className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-2 animate-[fadeSlideIn_200ms_ease-out]">
             <div className="w-8 h-8 rounded-lg bg-brass/15 text-brass flex items-center justify-center mb-3">
               <active.icon size={16} />
             </div>
 
-            <h3 className="text-xl font-bold font-display text-ink mb-2">{active.title}</h3>
+            <h3 className="text-lg sm:text-xl font-bold font-display text-ink mb-2">{active.title}</h3>
             <p className="text-sm text-ink-muted leading-relaxed mb-4">{active.body}</p>
 
             <div className="flex flex-col gap-2">
               {active.tips.map((tip, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-2 text-sm text-ink bg-white border border-ink/10 rounded-xl px-3.5 py-2.5"
+                  className="flex items-start gap-2 text-sm text-ink bg-white border border-ink/10 rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5"
                 >
                   <ChevronRight size={15} className="text-brass flex-shrink-0 mt-0.5" />
-                  <span className="font-mono text-[13px] leading-relaxed">{tip}</span>
+                  <span className="font-mono text-xs sm:text-[13px] leading-relaxed">{tip}</span>
                 </div>
               ))}
             </div>
           </div>
 
-
-          <div className="flex items-center justify-center gap-1.5 py-4 flex-shrink-0">
+          <div className="flex items-center justify-center gap-1.5 py-3 sm:py-4 flex-shrink-0">
             {SECTIONS.map((section) => (
               <button
                 key={section.id}
