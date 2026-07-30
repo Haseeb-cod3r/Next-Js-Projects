@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { MessageSquareText, X, Send, Loader2, Ellipsis, Bot, Sparkles } from "lucide-react"
+import { MessageSquareText, X, Send, Loader2, Ellipsis, Bot, BookMarked } from "lucide-react"
 import { AppContext } from '@/contexts/AppData'
 import { generateAnswer } from '@/service/GeminiService'
 import { StateContext } from '@/contexts/State'
@@ -351,7 +351,7 @@ export default function Chat() {
           <div className="flex items-center justify-between px-4 py-3.5 bg-ink flex-shrink-0">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-full bg-brass/20 flex items-center justify-center">
-                <Sparkles size={14} className="text-brass" />
+                <BookMarked size={14} className="text-brass" />
               </div>
               <div>
                 <p className="text-sm font-semibold font-display text-parchment leading-tight">DevStash Assistant</p>

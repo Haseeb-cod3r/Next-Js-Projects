@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import {
-  HelpCircle, X, BookOpen, Search, ArrowUpDown,
+  X, BookOpen, Search, ArrowUpDown,
   Archive, Sparkles, LogIn, ChevronRight
 } from 'lucide-react'
+import Button from './Button'
 
 const SECTIONS = [
   {
@@ -13,7 +14,7 @@ const SECTIONS = [
     label: 'Overview',
     icon: BookOpen,
     title: 'Welcome to DevStash',
-    body: "DevStash is your personal shelf for the tools, articles, and links you don't want to lose. Save anything with a title, a URL, a short description, and a few tags — then find it again in seconds.",
+    body: "DevStash is your personal shelf for the tools, articles, and links you don't want to lose. Save anything with a title, a URL, a short description, and a few tags  then find it again in seconds.",
     tips: [
       'Click "Add DevStash" in the header to save your first link',
       'Everything you save lives in your Stash, front and center',
@@ -25,7 +26,7 @@ const SECTIONS = [
     label: 'Tags & Search',
     icon: Search,
     title: 'Find anything, instantly',
-    body: 'Every stash can carry multiple tags — think of them as folders that overlap. Combine tags in the sidebar to narrow things down, or just type in the search bar for instant, highlighted matches.',
+    body: 'Every stash can carry multiple tags  think of them as folders that overlap. Combine tags in the sidebar to narrow things down, or just type in the search bar for instant, highlighted matches.',
     tips: [
       'Check multiple tags in the sidebar to filter by all of them at once',
       'The search bar matches titles as you type — no need to hit enter',
@@ -37,7 +38,7 @@ const SECTIONS = [
     label: 'Sort & Pin',
     icon: ArrowUpDown,
     title: 'Keep what matters on top',
-    body: 'Sort your whole stash by Latest, Oldest, Most Viewed, or Least Viewed using the sort menu. For anything you need close at hand regardless of sort order, pin it — pinned items always float to the top.',
+    body: 'Sort your whole stash by Latest, Oldest, Most Viewed, or Least Viewed using the sort menu. For anything you need close at hand regardless of sort order, pin it  pinned items always float to the top.',
     tips: [
       'Use the pin icon on any card to keep it at the top',
       'Sorting applies separately to your Stash and your Archive',
@@ -49,7 +50,7 @@ const SECTIONS = [
     label: 'Archive',
     icon: Archive,
     title: 'Clear the clutter, not the memory',
-    body: "Done with something but not ready to delete it? Move it to the Archive. It's a separate space for links you're not actively using — restore any item back to your Stash whenever you need it again.",
+    body: "Done with something but not ready to delete it? Move it to the Archive. It's a separate space for links you're not actively using  restore any item back to your Stash whenever you need it again.",
     tips: [
       'Archiving and restoring requires signing in',
       "Archived items keep all their tags, views, and pin status",
@@ -61,7 +62,7 @@ const SECTIONS = [
     label: 'AI Assistant',
     icon: Sparkles,
     title: 'Just ask, don\u2019t click',
-    body: "The chat bubble in the corner is a full assistant, not just a Q&A bot. Tell it what you want in plain language and it will do it for you — no need to hunt through menus.",
+    body: "The chat bubble in the corner is a full assistant, not just a Q&A bot. Tell it what you want in plain language and it will do it for you  no need to hunt through menus.",
     tips: [
       '"Add a stash for tailwindcss.com about utility CSS"',
       '"Archive the React link" or "Pin my Next.js stash"',
@@ -73,7 +74,7 @@ const SECTIONS = [
     label: 'Account',
     icon: LogIn,
     title: 'Sign in when it counts',
-    body: 'You can browse and save stashes without an account. Signing in unlocks the Archive — since it keeps your organized links tied to you, wherever you come back from.',
+    body: 'You can browse and save stashes without an account. Signing in unlocks the Archive  since it keeps your organized links tied to you, wherever you come back from.',
     tips: [
       'Look for the Sign In button in the top-right corner',
       'A locked icon next to "Archived" means you need to sign in first',
@@ -197,13 +198,9 @@ export default function HowItWorks() {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="flex items-center justify-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-sm text-left transition-all duration-150 border-l-2 border-transparent text-brass hover:bg-white/5 cursor-pointer"
-      >
-        <HelpCircle size={15} />
+      <Button variant="primary" onClick={() => { setOpen(true) }} isLoading={open ? true : false}>
         How it works
-      </button>
+      </Button>
 
       {open && mounted && createPortal(modal, document.body)}
     </>
